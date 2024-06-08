@@ -12,10 +12,10 @@ function App() {
   return (
     <>
       <header>
-        <div>
+        <div id='logo'>
           <img src="#" alt="logo" />
         </div>
-        <nav>
+        <nav className='top-nav'>
 
           <ul>
 
@@ -24,7 +24,7 @@ function App() {
               return (
 
                 <li>
-                  <Link to={`${key}/${value}`}>{key}</Link>
+                  <Link to={`${key}`}>{key}</Link>
                   
                 </li>
               )
