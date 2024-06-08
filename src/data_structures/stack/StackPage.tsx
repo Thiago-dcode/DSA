@@ -1,7 +1,7 @@
-import React from 'react'
+
 
 export const Stack = () => {
   return (
-    <div>STACK</div>
+    <h1>STACK DATA STRUCTURE</h1>
   )
 }
