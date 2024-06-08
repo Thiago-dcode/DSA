@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import StackNode from '../StackNode';
+import StackNode from '../../classes/StackNode';
 describe("StackNode class test",()=>{
 
     it("Should accept numbers",()=>{

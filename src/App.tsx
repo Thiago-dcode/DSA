@@ -1,15 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
 import { Route, Routes } from 'react-router-dom'
-import { Home } from './home/Home'
+import  Stack  from './data_structures/stack/Stack'
+import  Home  from './home/Home'
 import DataStructures from './data_structures/DataStructures'
-import { Stack } from './data_structures/stack/StackPage'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <Routes>

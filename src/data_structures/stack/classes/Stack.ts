@@ -1,5 +1,5 @@
 import StackNode from "./StackNode";
-import { Primitive } from "./types";
+import { Primitive } from "../types";
 export default class Stack<T extends Primitive> {
  
 

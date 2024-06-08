@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import StackNode from '../StackNode';
-import Stack from '../Stack';
+import StackNode from '../../classes/StackNode';
+import Stack from '../../classes/Stack';
 describe("Stack class test",()=>{
 
     it("Should initialize with a empty stack",()=>{
