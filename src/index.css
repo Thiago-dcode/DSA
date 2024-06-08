@@ -1,8 +1,12 @@
 body {
   background-color:#13161B;
+  color: #FBFAF8;
 }
 
-.container{
+.main-container{
 
   border: 2px solid white;
+
+  height: 100vh;
+  width: 100vw;
 }

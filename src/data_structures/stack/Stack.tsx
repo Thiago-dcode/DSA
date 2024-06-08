@@ -1,8 +1,13 @@
+import Main from "../../global_components/container/Main";
 
 
  const Stack = () => {
   return (
-    <h1>STACK DATA STRUCTURE</h1>
+    <Main>
+
+      <div>STACK</div>
+
+    </Main>
   )
 }
 
