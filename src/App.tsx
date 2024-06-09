@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <header>
+      <header className='flex flex-row items-center justify-center border-2 border-white'>
         <div id='logo'>
           <img src="#" alt="logo" />
         </div>
@@ -25,7 +25,7 @@ function App() {
 
                 <li>
                   <Link to={`${key}`}>{key}</Link>
-                  
+
                 </li>
               )
             })}
