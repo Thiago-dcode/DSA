@@ -1,5 +1,5 @@
-import React from 'react'
-import Main from '../global_components/container/Main'
+
+import Main from '../components/container/Main'
 
  const Home = () => {
   return (

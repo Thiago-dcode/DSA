@@ -1,0 +1,50 @@
+.stack-container{
+    border: 5px solid white;
+
+}
+#stack{
+
+  
+   
+    position: relative;
+}
+
+.stack-node{
+
+    border: 5px solid white;
+    position: absolute;
+    left: 0;
+    right: 0;
+   
+    margin: auto;
+    animation-duration: 1s;
+    animation-name: add-node;
+}
+
+
+@keyframes add-node {
+    from {
+        bottom: var(--start);
+        opacity: 0.2;
+     
+    }
+  
+    to {
+        bottom: var(--end);
+        opacity: 1;
+    }
+  }
+
+  @keyframes remove-node {
+    from {
+        bottom: var(--start);
+        opacity: 1;
+     
+    }
+  
+    to {
+        bottom: var(--end);
+        opacity: 0;
+        display: none;
+    }
+  }

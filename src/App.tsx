@@ -3,7 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Stack from './data_structures/stack/Stack'
 import Home from './home/Home'
 import DataStructures from './data_structures/DataStructures'
-import config from './config'
+import {globalConfig} from './config'
 
 
 function App() {
@@ -11,15 +11,15 @@ function App() {
 
   return (
     <>
-      <header className='flex flex-row items-center justify-center border-2 border-white'>
-        <div id='logo'>
+      <header className='flex flex-row items-center justify-between sticky top-0 z-50  py-8'>
+        <div className='border-2 border-white' id='logo'>
           <img src="#" alt="logo" />
         </div>
-        <nav className='top-nav'>
+        <nav className='top-nav w-full flex items-center justify-center'>
 
-          <ul>
+          <ul className='flex items-center  border-2 border-white justify-evenly gap-10 px-10 uppercase'>
 
-            {Object.entries(config.links).map(([key, value]) => {
+            {Object.entries(globalConfig.links).map(([key, value]) => {
 
               return (
 
