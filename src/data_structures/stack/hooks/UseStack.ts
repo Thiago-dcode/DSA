@@ -5,11 +5,12 @@ import { Primitive } from "../types";
 import StackNode from "../classes/StackNode";
 export const UseStack = () => {
   const [stack, setStack] = useState<Stack<Primitive> | null>(null);
-  const [nodes, setNodes] = useState<StackNode<Primitive>[] | null>([]);
+  const [nodes, setNodes] = useState<StackNode<Primitive>[]>([]);
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isAnimationRunning, setAnimationRunning] = useState(false);
-  const stackNodeRef = useRef<HTMLDivElement>(null);
+  const [action,setAction]= useState('');
   const push = () => {
+    
     if (isAnimationRunning || stack == null) {
       return;
     }
@@ -20,15 +21,20 @@ export const UseStack = () => {
     }
     setAnimationRunning(true);
     stack.push("50");
-    render("push");
+    setNodes((prev)=>[...prev, stack.peekNode()]);
+    setAction('push')
   };
   const pop = () => {
     if (isAnimationRunning || stack == null) {
       return;
     }
+    // setAnimationRunning(true)
     setIsStackOverFlow(false);
     stack.pop();
-    render("pop");
+    setAction('pop');
+    setNodes((prev)=>[...stack?._getStack_()])
+  
+   ;
   };
   const flush = () => {
     if (stack == null) {
@@ -36,49 +42,30 @@ export const UseStack = () => {
     }
     setIsStackOverFlow(false);
     stack.flush();
-    render("flush");
+    setNodes([]);
   };
+  useEffect(()=>{
+if(action == 'pop'){
+  setAnimationRunning(false)
+}
 
-  const render = (action: string) => {
-    if (!stack) return;
-    if (action == "push" || action == "flush") {
-      console.log(stackNodeRef);
-      setNodes((prev) => [...stack?._getStack_()]);
-      //animation here;
-    } else if (action == "pop") {
-      //animation here;
-      console.log(stackNodeRef);
-      setNodes((prev) => [...stack?._getStack_()]);
-    }
-  };
+  },[action])
   useEffect(() => {
     setStack(new Stack());
   }, []);
 
-  useEffect(() => {
-   
-    if (
-      stackNodeRef == null ||
-      stackNodeRef.current == null ||
-      stack == null ||
-      !stack.peekNode()
-    )
-      return;
-    stackNodeRef.current.style.setProperty(
-      "--start",
-      `${stack?.getmaxSize() * StackNode.height}px`
-    );
-    stackNodeRef.current.style.setProperty(
-      "--end",
-      `${stack?.peekNode().position}px`
-    );
-  }, [nodes]);
+  const render = (action :string) => {
+    if (!stack) return;
+    
+  };
   const onAnimationEnds = (e: React.AnimationEvent) => {
+    console.log('ANIMATION')
     setAnimationRunning(false);
   };
   return {
     stack,
     render,
+    action,
     nodes,
     push,
     pop,
@@ -86,6 +73,6 @@ export const UseStack = () => {
     isAnimationRunning,
     onAnimationEnds,
     isStackOverFlow,
-    stackNodeRef,
+    setAnimationRunning,
   };
 };
