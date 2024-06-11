@@ -9,7 +9,7 @@ export const UseStack = () => {
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isAnimationRunning, setAnimationRunning] = useState(false);
   const [action,setAction]= useState('');
-  const push = () => {
+  const push = (data:string) => {
     
     if (isAnimationRunning || stack == null) {
       return;
@@ -20,7 +20,7 @@ export const UseStack = () => {
       return;
     }
     setAnimationRunning(true);
-    stack.push("50");
+    stack.push(data);
     setNodes((prev)=>[...prev, stack.peekNode()]);
     setAction('push')
   };
@@ -28,7 +28,7 @@ export const UseStack = () => {
     if (isAnimationRunning || stack == null) {
       return;
     }
-    // setAnimationRunning(true)
+
     setIsStackOverFlow(false);
     stack.pop();
     setAction('pop');

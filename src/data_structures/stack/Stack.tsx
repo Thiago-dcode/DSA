@@ -5,12 +5,13 @@ import { stackConfig } from "@/config";
 
 import { UseStack } from "./hooks/UseStack";
 import StackNodeComponent from "./components/StackNodeComponent";
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import StackNode from "./classes/StackNode";
-import { constrainedMemory } from "process";
+import { Input } from "@/components/ui/input";
 const Stack = () => {
   const {setAnimationRunning, stack, nodes,action, push, pop, flush, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
   const stackNodeRefs = useRef<HTMLDivElement[]>([])
+  const [nodeData, setNodeData] = useState('');
   stackNodeRefs.current = [];
   const handleEntranceAnimation = useCallback((ref: HTMLDivElement) => {
     if (
@@ -38,7 +39,7 @@ const Stack = () => {
     ) {
       return;
     }
-    setAnimationRunning(true);
+   
     ref.style.animationName = "remove-node"
     ref.style.setProperty(
       "--end",
@@ -81,17 +82,25 @@ const Stack = () => {
   return (
     <>
       {stack && <Main>
-        {<div className="border-2 border-white w-full flex gap-2">
+        {<div className="border-2 border-white w-full flex items-center justify-between gap-2 p-4">
+          <div className="flex  items-center gap-10 justify-center">
 
+        
+          <div className="flex max-w-sm items-center space-x-2">
+          <Input defaultValue={nodeData} placeholder="let x = 50" className="text-black" onChange={(e)=>{
+            setNodeData(e.target.value)
+          }} type="text" name="" id="" />
           <Button style={{
             opacity: isAnimationRunning ? '0.4' : '1',
             cursor: isAnimationRunning ? 'wait' : 'pointer'
           }} onClick={() => {
-            push();
+            push(nodeData || 'let x = 50');
                  
-
-          }} variant={"destructive"}>push</Button>
+          }} type="submit" className="bg-green-400  hover:bg-green-600" variant={"default"}>push</Button>
+          </div>
+         
           {nodes !== null && nodes.length > 0 && <Button onClick={() => {
+             setAnimationRunning(true);
             handleExitAnimation(stackNodeRefs.current[stackNodeRefs.current.length - 1]);
           setTimeout(() => {
             pop();
@@ -101,8 +110,13 @@ const Stack = () => {
           }} style={{
             opacity: isAnimationRunning ? '0.4' : '1',
             cursor: isAnimationRunning ? 'wait' : 'pointer'
-          }} variant={"destructive"}>pop</Button>}
-        </div>}
+          }}  type="submit" className="bg-red-400  hover:bg-red-600" >pop</Button>}
+        </div>
+        <div>
+          run
+        </div>
+        </div>
+        }
 
 
         <div className=" w-full h-full flex items-center justify-center">
