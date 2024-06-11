@@ -17,7 +17,8 @@
     right: 0;
    
     margin: auto;
-    animation-duration: 0.5s;
+    animation-duration: 0.4s;
+    animation-timing-function: ease-in-out;
     animation-name: add-node;
 }
 
@@ -25,7 +26,7 @@
 @keyframes add-node {
     from {
         bottom: var(--start);
-        opacity: 0.2;
+        opacity: 0.5;
      
     }
   
@@ -44,7 +45,7 @@
   
     to {
         bottom: var(--end);
-        opacity: 0;
-        display: none;
+        opacity: 0.1;
+      
     }
   }

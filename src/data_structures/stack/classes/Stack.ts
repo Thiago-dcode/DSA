@@ -3,7 +3,7 @@ import { Primitive } from "../types";
 export default class Stack<T extends Primitive> {
   private stack: StackNode<T>[];
   private maxSize;
-  constructor(data: T[] = [], maxSize = 10) {
+  constructor(data: T[] = [], maxSize = 20) {
     this.stack = [];
     this.maxSize = maxSize;
     data.forEach((ele, i) => {

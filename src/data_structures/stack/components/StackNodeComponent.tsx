@@ -12,7 +12,8 @@ type props = {
 const StackNodeComponent = forwardRef<HTMLDivElement,props>(({ node, id,onAnimationEnds},ref) => {
 
   return (
-    <div   onAnimationEnd={(e) => {
+   <>
+  { node && <div   onAnimationEnd={(e) => {
       onAnimationEnds(e)
     }} ref={ref} id={`stackNode-${id}`} style={
       {
@@ -23,7 +24,9 @@ const StackNodeComponent = forwardRef<HTMLDivElement,props>(({ node, id,onAnimat
       }
     } className="stack-node text-center flex items-center justify-center overflow-auto">
       {node.getData()}
-    </div>
+    </div>}
+   
+   </>
   )
 })
 export default StackNodeComponent;
