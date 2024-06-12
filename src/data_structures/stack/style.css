@@ -27,12 +27,14 @@
     from {
         bottom: var(--start);
         opacity: 0.5;
+        background: rgb(74, 222, 128);
      
     }
   
     to {
         bottom: var(--end);
         opacity: 1;
+        background: none;
     }
   }
 
@@ -40,12 +42,13 @@
     from {
         bottom: var(--start);
         opacity: 1;
+        background: none;
      
     }
   
     to {
         bottom: var(--end);
         opacity: 0.1;
-      
+      background: rgb(220, 38, 38);
     }
   }

@@ -21,7 +21,7 @@ export const stackConfig = {
   ['max-node']: 10,
   ['button-space']: 5,
   stack: {
-    width: 350,
+    width: 450,
 
   },
   node: {

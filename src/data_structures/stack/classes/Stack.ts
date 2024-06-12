@@ -2,9 +2,11 @@ import StackNode from "./StackNode";
 import { Primitive } from "../types";
 export default class Stack<T extends Primitive> {
   private stack: StackNode<T>[];
+  private _width:number;
   private maxSize;
-  constructor(data: T[] = [], maxSize = 20) {
+  constructor(data: T[] = [], maxSize = 2, width = 350) {
     this.stack = [];
+    this._width = width;
     this.maxSize = maxSize;
     data.forEach((ele, i) => {
       this.stack.push(new StackNode<T>(ele, i));
@@ -31,6 +33,9 @@ export default class Stack<T extends Primitive> {
 
   get size() {
     return this.stack.length;
+  }
+  get width(){
+    return this._width;
   }
   getmaxSize() {
     return this.maxSize;

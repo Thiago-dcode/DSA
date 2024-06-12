@@ -1,13 +1,12 @@
 import Main from "../../components/container/Main";
 import './style.css';
 import { Button } from "@/components/ui/button";
-import { stackConfig } from "@/config";
-
 import { UseStack } from "./hooks/UseStack";
 import StackNodeComponent from "./components/StackNodeComponent";
 import { useCallback, useEffect, useRef, useState } from "react";
 import StackNode from "./classes/StackNode";
 import { Input } from "@/components/ui/input";
+import Info from "@/components/ui/info";
 const Stack = () => {
   const { isFillingStack, stack, nodes, action, push, pop, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
   const stackNodeRefs = useRef<HTMLDivElement[]>([])
@@ -44,8 +43,9 @@ const Stack = () => {
   useEffect(() => {
 
     if (isStackOverFlow) {
-      window.alert('STACK OVERFLOW ERROR')
-      flush();
+      // flush();
+      // window.alert('STACK OVERFLOW ERROR')
+    
     }
 
 
@@ -71,14 +71,15 @@ const Stack = () => {
                 opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
                 cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
               }} onClick={async () => {
-                if (isFillingStack) return;
+                if (isFillingStack || isStackOverFlow) return;
                 await push(nodeData || 'let x = 50');
 
               }} type="submit" className="bg-green-400  hover:bg-green-600" variant={"default"}>push</Button>
             </div>
-
+         
             {nodes !== null && nodes.length > 0 && <Button onClick={async () => {
-              if (isFillingStack) return;
+              if (isFillingStack ||isStackOverFlow) return;
+            
               await pop(stackNodeRefs.current[nodes.length - 1]);
 
 
@@ -103,20 +104,20 @@ const Stack = () => {
           </div>
         </div>
         }
-
-
+       <Info text= {<>
+        A <b>Stack</b> is a linear data structure that follows a particular order in which the operations are performed. The order may be <b>LIFO</b><i>(Last In First Out) </i>or <b>FILO</b><i>(First In Last Out)</i>. LIFO implies that the element that is inserted last, comes out first and FILO implies that the element that is inserted first, comes out last.</>} className="self-start"/>
         <div className=" w-full h-full flex items-center justify-center">
 
           <div style={
             {
-              paddingTop: stackConfig["button-space"] + 'px'
+              paddingTop: StackNode.spacing + 'px'
             }
-          } className="border-8 border-white px-2">
+          } className="border-l-8 border-r-8 border-b-8 rounded-b-lg border-white px-2">
 
-
+       
             <div style={{
-              height: `${(stackConfig.node.height + stackConfig["button-space"]) * stack.getmaxSize()}px`,
-              width: `${stackConfig.stack.width}px`,
+              height: `${(StackNode.height + StackNode.spacing) * stack.getmaxSize()}px`,
+              width: `${stack.width}px`,
 
 
             }} className="relative" id="stack">
@@ -133,6 +134,9 @@ const Stack = () => {
 
             </div>
           </div>
+     { isStackOverFlow &&     <div className="">
+          <h1 className="text-white">STACK OVERFLOW!!</h1>
+          </div> }
         </div>
 
       </Main>}

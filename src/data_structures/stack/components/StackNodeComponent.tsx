@@ -22,7 +22,7 @@ const StackNodeComponent = forwardRef<HTMLDivElement,props>(({ node, id,onAnimat
         height: `${StackNode.height}px`,
 
       }
-    } className="stack-node text-center flex items-center justify-center overflow-auto">
+    } className="stack-node text-center flex items-center justify-center overflow-auto rounded-lg">
       {node.getData()}
     </div>}
    

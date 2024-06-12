@@ -4,7 +4,7 @@ import Stack from "../classes/Stack";
 import { Primitive } from "../types";
 import StackNode from "../classes/StackNode";
 import { delay } from "@/lib/utils";
-import { s } from "node_modules/vite/dist/node/types.d-aGj9QkWt";
+
 export const UseStack = () => {
   const [stack, setStack] = useState<Stack<Primitive> | null>(null);
   const [nodes, setNodes] = useState<StackNode<Primitive>[]>([]);
@@ -13,7 +13,7 @@ export const UseStack = () => {
   const [isFillingStack, setIsFillingStack] = useState(false);
   const [action, setAction] = useState("");
   const push = (data: string) => {
-    if (stack == null || isAnimationRunning) {
+    if (stack == null || isAnimationRunning || isStackOverFlow) {
       return;
     }
     setIsStackOverFlow(false);
@@ -32,13 +32,14 @@ export const UseStack = () => {
     });
   };
   const pop = async (ref: HTMLDivElement) => {
-    if (stack == null || !stack.peekNode() || !ref) {
+    if (stack == null || isAnimationRunning || !stack.peekNode() || !ref) {
       return;
     }
-    setAction("pop");
-    setAnimationRunning(true);
+
     return await new Promise((resolve, reject) => {
       if (!isAnimationRunning) {
+        setAction("pop");
+        setAnimationRunning(true);
         ref.style.setProperty("--start", `${stack?.peekNode().position}px`);
         ref.style.setProperty(
           "--end",
@@ -65,7 +66,7 @@ export const UseStack = () => {
     }
     setIsStackOverFlow(false);
     stack.flush();
-    setNodes([]);
+    setNodes(() => []);
   };
 
   const fillStack = async () => {
