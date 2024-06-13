@@ -6,10 +6,11 @@ type props = {
 
   node: StackNode<Primitive>,
   id: number,
+  height: number,
   onAnimationEnds: (e: React.AnimationEvent) => void;
   
 }
-const StackNodeComponent = forwardRef<HTMLDivElement,props>(({ node, id,onAnimationEnds},ref) => {
+const StackNodeComponent = forwardRef<HTMLDivElement,props>(({ node,height, id,onAnimationEnds},ref) => {
 
   return (
    <>
@@ -19,7 +20,7 @@ const StackNodeComponent = forwardRef<HTMLDivElement,props>(({ node, id,onAnimat
       {
         animation: '',
         bottom: `${node.position}px`,
-        height: `${StackNode.height}px`,
+        height: `${height}px`,
 
       }
     } className="stack-node text-center flex items-center justify-center overflow-auto rounded-lg">

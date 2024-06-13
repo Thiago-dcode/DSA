@@ -2,15 +2,13 @@ import { Primitive } from "../types";
 
 export default class StackNode<T extends Primitive> {
   private data: T;
-  static readonly height = 70;
-  static readonly spacing = 5;
-  private _index: number = 0;
+  
   private _position: number;
-  constructor(data: T,index: number) {
-    this._index = index;
-    this._position =
-      (StackNode.height + StackNode.spacing) * this._index + StackNode.spacing;
+  constructor(data: T, position:number) {
+   
+    this._position = position;
     this.data = data;
+    // (StackNode.height + StackNode.spacing) * this._index + StackNode.spacing;
   }
 
   // Getter for the value
@@ -20,9 +18,7 @@ export default class StackNode<T extends Primitive> {
   get position() {
     return this._position;
   }
-  get index(){
-    return this._index
-  }
+ 
 
   // Setter for the value
   setData(data: T) {

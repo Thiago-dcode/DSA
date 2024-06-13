@@ -1,54 +1,45 @@
-.stack-container{
-    border: 5px solid white;
-
+.stack-container {
+  border: 5px solid white;
 }
-#stack{
-
-  
-   
-    position: relative;
+#stack {
+  position: relative;
 }
 
-.stack-node{
+.stack-node {
+  border: 5px solid white;
+  position: absolute;
+  left: 0;
+  right: 0;
 
-    border: 5px solid white;
-    position: absolute;
-    left: 0;
-    right: 0;
-   
-    margin: auto;
-    animation-duration: 0.4s;
-    animation-timing-function: ease-in-out;
-    animation-name: add-node;
+  margin: auto;
+  animation-timing-function: ease-in-out;
+  animation-name: add-node;
 }
-
 
 @keyframes add-node {
-    from {
-        bottom: var(--start);
-        opacity: 0.5;
-        background: rgb(74, 222, 128);
-     
-    }
-  
-    to {
-        bottom: var(--end);
-        opacity: 1;
-        background: none;
-    }
+  from {
+    bottom: var(--start);
+    opacity: 0.5;
+    background: rgb(74, 222, 128);
   }
 
-  @keyframes remove-node {
-    from {
-        bottom: var(--start);
-        opacity: 1;
-        background: none;
-     
-    }
-  
-    to {
-        bottom: var(--end);
-        opacity: 0.1;
-      background: rgb(220, 38, 38);
-    }
+  to {
+    bottom: var(--end);
+    opacity: 1;
+    background: none;
   }
+}
+
+@keyframes remove-node {
+  from {
+    bottom: var(--start);
+    opacity: 1;
+    background: none;
+  }
+
+  to {
+    bottom: var(--end);
+    opacity: 0.1;
+    background: rgb(220, 38, 38);
+  }
+}

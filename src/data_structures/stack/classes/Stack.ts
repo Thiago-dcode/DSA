@@ -1,24 +1,40 @@
 import StackNode from "./StackNode";
-import { Primitive } from "../types";
+import { Primitive, speed } from "../types";
+
 export default class Stack<T extends Primitive> {
   private stack: StackNode<T>[];
-  private _width:number;
-  private maxSize;
-  constructor(data: T[] = [], maxSize = 2, width = 350) {
+  private _width: number;
+  private _maxSize;
+  private _nodeHeight: number;
+  private _nodeSpacing: number;
+  private _speed: speed;
+
+  constructor(data: T[] = []) {
     this.stack = [];
-    this._width = width;
-    this.maxSize = maxSize;
+    this._width = 350;
+    this._maxSize = 10;
+    this._nodeHeight = 50;
+    this._nodeSpacing = 5;
+    this._speed = 2;
     data.forEach((ele, i) => {
-      this.stack.push(new StackNode<T>(ele, i));
+      this.stack.push(
+        new StackNode<T>(
+          ele,
+          (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+        )
+      );
     });
   }
   push(element: T) {
     if (this.size >= this.maxSize) {
-      window.alert("STACK OVERFLOW!");
-      this.flush();
       return;
     }
-    this.stack.push(new StackNode(element, this.size));
+    this.stack.push(
+      new StackNode(
+        element,
+        (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+      )
+    );
   }
   pop(): T | undefined {
     const node = this.stack.pop();
@@ -31,21 +47,42 @@ export default class Stack<T extends Primitive> {
     return this.stack[this.size - 1];
   }
 
+  get nodeHeight() {
+    return this._nodeHeight;
+  }
+  get nodeSpacing() {
+    return this._nodeSpacing;
+  }
   get size() {
     return this.stack.length;
   }
-  get width(){
+  get width() {
     return this._width;
   }
-  getmaxSize() {
-    return this.maxSize;
-  }
-  setmaxSize(max: number) {
-    if (max > 0 && max < 51) {
-      this.maxSize = max;
+  set width(width: number) {
+    if (width < 100 || width > 600) {
+      return;
     }
+    this._width = width;
   }
-
+  get maxSize() {
+    return this._maxSize;
+  }
+  set maxSize(max: number) {
+    if (max < 1 || max > 30) {
+      return;
+    }
+    this._maxSize = max;
+  }
+  get speed() {
+    return this._speed;
+  }
+  set speed(speed: speed) {
+    if (speed < 1 || speed > 3) {
+      return;
+    }
+    this._speed = speed;
+  }
   flush() {
     this.stack = [];
   }

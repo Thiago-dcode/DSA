@@ -4,14 +4,20 @@ import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
 import StackNodeComponent from "./components/StackNodeComponent";
 import { useCallback, useEffect, useRef, useState } from "react";
-import StackNode from "./classes/StackNode";
 import { Input } from "@/components/ui/input";
 import Info from "@/components/ui/info";
+import { PopUp } from "@/components/ui/PopUp";
+import { Wrench } from "lucide-react";
+import { PopOverComponent } from "@/components/ui/PopOverComponent";
+import StackConfig from "./components/StackConfig";
+import { getSpeed } from "@/lib/utils";
 const Stack = () => {
-  const { isFillingStack, stack, nodes, action, push, pop, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
+  const { isFillingStack, stack, render, nodes, action, push, pop, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
   const stackNodeRefs = useRef<HTMLDivElement[]>([])
   const [nodeData, setNodeData] = useState('');
+
   stackNodeRefs.current = [];
+
   const handleEntranceAnimation = useCallback((ref: HTMLDivElement) => {
     if (
       ref == null ||
@@ -20,11 +26,12 @@ const Stack = () => {
     ) {
       return;
     }
-
+    
     ref.style.animationName = "add-node"
+    ref.style.animationDuration = getSpeed(stack.speed) + 's'
     ref.style.setProperty(
       "--start",
-      `${stack?.getmaxSize() * StackNode.height}px`
+      `${stack?.maxSize * stack.nodeHeight}px`
     );
     ref.style.setProperty(
       "--end",
@@ -32,6 +39,13 @@ const Stack = () => {
     );
   }, [stack, nodes])
 
+
+
+  useEffect(() => {
+
+    if (action == 'push') { handleEntranceAnimation(stackNodeRefs.current[stackNodeRefs.current.length - 1]); }
+
+  }, [nodes, action])
   const addToRef = (ele: HTMLDivElement | null) => {
 
     if (!ele) return;
@@ -40,27 +54,12 @@ const Stack = () => {
 
 
   }
-  useEffect(() => {
-
-    if (isStackOverFlow) {
-      // flush();
-      // window.alert('STACK OVERFLOW ERROR')
-    
-    }
-
-
-  }, [isStackOverFlow])
-  useEffect(() => {
-
-    if (action == 'push') { handleEntranceAnimation(stackNodeRefs.current[stackNodeRefs.current.length - 1]); }
-
-  }, [nodes, action])
 
   return (
     <>
-      {stack && <Main>
+      {stack && nodes && <Main>
         {<div className="border-2 border-white w-full flex items-center justify-between gap-2 p-4">
-          <div className="flex  items-center gap-10 justify-center">
+          <div className="flex  items-center gap-2 justify-center">
 
 
             <div className="flex max-w-sm items-center space-x-2">
@@ -76,10 +75,10 @@ const Stack = () => {
 
               }} type="submit" className="bg-green-400  hover:bg-green-600" variant={"default"}>push</Button>
             </div>
-         
+
             {nodes !== null && nodes.length > 0 && <Button onClick={async () => {
-              if (isFillingStack ||isStackOverFlow) return;
-            
+              if (isFillingStack || isStackOverFlow) return;
+
               await pop(stackNodeRefs.current[nodes.length - 1]);
 
 
@@ -94,9 +93,9 @@ const Stack = () => {
               opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
               cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
             }} onClick={async () => {
-              if (isFillingStack) return;
+              if (isFillingStack || isStackOverFlow) return;
               await fillStack();
-            
+
               await emptyStack(stackNodeRefs.current);
 
 
@@ -104,19 +103,28 @@ const Stack = () => {
           </div>
         </div>
         }
-       <Info text= {<>
-        A <b>Stack</b> is a linear data structure that follows a particular order in which the operations are performed. The order may be <b>LIFO</b><i>(Last In First Out) </i>or <b>FILO</b><i>(First In Last Out)</i>. LIFO implies that the element that is inserted last, comes out first and FILO implies that the element that is inserted first, comes out last.</>} className="self-start"/>
+        <div className="flex  justify-between w-full px-4">
+          <Info title="STACK" text={<>
+            A stack is a <b>linear</b> data structure that follows the <b>Last In, First Out (LIFO)</b> principle. This means that <b>the last element added to the stack is the first one to be removed</b>. Stacks are commonly used in various algorithms and applications, such as managing function calls, undo mechanisms in software, and evaluating expressions.</>} className="self-start" />
+          <div>
+            <PopOverComponent content={
+              <StackConfig render={render} stack={stack} />
+            } trigger={<Button><Wrench color="white" /></Button>} />
+          </div>
+
+        </div>
+
         <div className=" w-full h-full flex items-center justify-center">
 
           <div style={
             {
-              paddingTop: StackNode.spacing + 'px'
+              paddingTop: stack.nodeSpacing + 'px'
             }
           } className="border-l-8 border-r-8 border-b-8 rounded-b-lg border-white px-2">
 
-       
+
             <div style={{
-              height: `${(StackNode.height + StackNode.spacing) * stack.getmaxSize()}px`,
+              height: `${(stack.nodeHeight + stack.nodeSpacing) * stack.maxSize}px`,
               width: `${stack.width}px`,
 
 
@@ -125,7 +133,7 @@ const Stack = () => {
               {
                 nodes.length > 0 && nodes.map((node, i) => {
                   return (
-                    <StackNodeComponent ref={(el) => {
+                    <StackNodeComponent height={stack.nodeHeight} ref={(el) => {
                       addToRef(el)
                     }} key={'stackNode-' + i} onAnimationEnds={onAnimationEnds} node={node} id={i} />
                   )
@@ -134,9 +142,9 @@ const Stack = () => {
 
             </div>
           </div>
-     { isStackOverFlow &&     <div className="">
-          <h1 className="text-white">STACK OVERFLOW!!</h1>
-          </div> }
+          <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
+            flush();
+          }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${stack.maxSize} exceeded.`} />
         </div>
 
       </Main>}
