@@ -28,11 +28,11 @@ export default function StackConfig({
             </div>
             <div>
                 <label htmlFor="speed">Speed</label>
-                <Input onChange={(e) => {
+                <Input defaultChecked defaultValue={stack.speed} onChange={(e) => {
                     const speed = parseInt(e.target.value)
                     if (speed == 1 || speed == 2 || speed == 3) {
                         stack.speed = speed
-                        render()
+                        // render()
                     }
                 }} name='speed' type='range' min={1} max={3} />
             </div>

@@ -10,9 +10,9 @@
   position: absolute;
   left: 0;
   right: 0;
-
   margin: auto;
   animation-timing-function: ease-in-out;
+  animation-duration: 0.5s;
   animation-name: add-node;
 }
 

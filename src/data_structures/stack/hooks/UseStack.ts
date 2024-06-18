@@ -1,24 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Stack from "../classes/Stack";
 
 import { Primitive } from "../types";
-import StackNode from "../classes/StackNode";
+
 import { delay, getSpeed } from "@/lib/utils";
+
+import UseAnimation from "./UseAnimation";
 
 export const UseStack = () => {
   const [stack, setStack] = useState<Stack<Primitive> | null>(null);
-  const [nodes, setNodes] = useState<StackNode<Primitive>[]>([]);
+  const { handleExitAnimation } = UseAnimation(stack);
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isAnimationRunning, setAnimationRunning] = useState(false);
   const [isFillingStack, setIsFillingStack] = useState(false);
   const [_render, setRender] = useState(false);
-  const [action, setAction] = useState("");
   const push = (data: string) => {
     if (stack == null || isAnimationRunning || isStackOverFlow) {
       return;
     }
     setIsStackOverFlow(false);
-    if (nodes !== null && nodes?.length >= stack.maxSize) {
+    if (stack.size >= stack.maxSize) {
       setIsStackOverFlow(true);
       return;
     }
@@ -26,73 +27,62 @@ export const UseStack = () => {
       if (!isAnimationRunning) {
         setAnimationRunning(true);
         stack.push(data);
-        setNodes((prev) => [...prev, stack.peekNode()]);
-        setAction("push");
         resolve(true);
       }
     });
   };
-  const pop = async (ref: HTMLDivElement) => {
-    if (stack == null || isAnimationRunning || !stack.peekNode() || !ref) {
+  const pop = async () => {
+    if (
+      stack == null ||
+      isAnimationRunning ||
+      !stack.peekNode() ||
+      !stack.peekNode().ref
+    ) {
       return;
     }
-
-    return await new Promise((resolve, reject) => {
-      if (!isAnimationRunning) {
-        setAction("pop");
-        setAnimationRunning(true);
-        ref.style.setProperty("--start", `${stack?.peekNode().position}px`);
-        ref.style.setProperty(
-          "--end",
-          `${stack?.maxSize * stack.nodeHeight}px`
-        );
-
-        ref.style.animationName = "remove-node";
-        ref.style.animationDuration = getSpeed(stack.speed) + "s";
-        ref.style.bottom = stack?.maxSize * stack.nodeHeight + "px";
-
-        ref.addEventListener("animationend", () => {
-          ref.style.display = "none";
-          stack.pop();
-          setNodes((prev) => [...stack?._getStack_()]);
-          setAnimationRunning(false);
-          resolve(true);
-        });
-      }
+    const ref = stack.peekNode().ref?.current;
+    if (!ref) return;
+    setAnimationRunning(true);
+    await handleExitAnimation(ref, () => {
+      ref.style.display = "none";
+      stack.pop();
+      setAnimationRunning(false);
+      render();
     });
   };
   const flush = () => {
     if (stack == null) {
       return;
     }
-
+    setAnimationRunning(false);
     setIsStackOverFlow(false);
     stack.flush();
-    setNodes(() => []);
   };
 
   const fillStack = async () => {
-    if (!stack || stack?.maxSize - nodes?.length == 0) return;
-    setIsFillingStack(true);
-  const delayMs =  getSpeed(stack.speed) * 1000;
-    for (let i = 0; i < stack?.maxSize - nodes?.length; i++) {
-      await push("let foo = " + i);
-      await delay(delayMs);
-    }
-
-    setIsFillingStack(false);
-  };
-  const emptyStack = async (refs: HTMLDivElement[]) => {
     if (!stack) return;
     setIsFillingStack(true);
 
-    for (let i = refs.length - 1; i >= 0; i--) {
-      await pop(refs[i]);
+    const spaceRemaining = stack.maxSize - stack.size;
+    for (let i = 0; i < spaceRemaining; i++) {
+      await push("let foo = " + i);
+      await delay(getSpeed(stack.speed) * 1000);
+    }
+    setIsFillingStack(false);
+  };
+  const emptyStack = async () => {
+    if (!stack) return;
+    setIsFillingStack(true);
+
+    for (let i = stack?.maxSize - 1; i >= 0; i--) {
+      await pop();
     }
 
     setIsFillingStack(false);
   };
-
+  const stop = () => {
+    console.log("stopping?");
+  };
   const render = (clean = false) => {
     if (clean && stack != null && stack?.size > 0) {
       flush();
@@ -100,21 +90,25 @@ export const UseStack = () => {
     }
     setRender((prev) => !prev);
   };
-  const onAnimationEnds = (e: React.AnimationEvent) => {
+  const onAnimationEnds = (
+    e: AnimationEvent | React.AnimationEvent<HTMLDivElement>
+  ) => {
     setAnimationRunning(false);
   };
   useEffect(() => {
+    // console.log(isAnimationRunning);
+  }, [isAnimationRunning]);
+  useEffect(() => {
     setStack(new Stack());
   }, []);
-  
+
   return {
     stack,
     render,
-    action,
-    nodes,
     fillStack,
     emptyStack,
     push,
+    stop,
     isFillingStack,
     pop,
     flush,

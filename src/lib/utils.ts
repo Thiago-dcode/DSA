@@ -10,11 +10,11 @@ export const delay = (ms: number) =>
 export const getSpeed = (speed: speed) => {
   switch (speed) {
     case 1:
-      return 0.7;
+      return 1;
     case 2:
       return 0.5;
     case 3:
-      return 0.3;
+      return 0.2;
 
     default:
       return 0.5;

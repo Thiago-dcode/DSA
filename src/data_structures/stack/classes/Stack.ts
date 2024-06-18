@@ -8,6 +8,7 @@ export default class Stack<T extends Primitive> {
   private _nodeHeight: number;
   private _nodeSpacing: number;
   private _speed: speed;
+  private _beginner: number;
 
   constructor(data: T[] = []) {
     this.stack = [];
@@ -16,6 +17,7 @@ export default class Stack<T extends Primitive> {
     this._nodeHeight = 50;
     this._nodeSpacing = 5;
     this._speed = 2;
+    this._beginner = this.maxSize * this.nodeHeight;
     data.forEach((ele, i) => {
       this.stack.push(
         new StackNode<T>(
@@ -72,6 +74,7 @@ export default class Stack<T extends Primitive> {
     if (max < 1 || max > 30) {
       return;
     }
+    this.beginner = max * this.nodeHeight;
     this._maxSize = max;
   }
   get speed() {
@@ -82,6 +85,12 @@ export default class Stack<T extends Primitive> {
       return;
     }
     this._speed = speed;
+  }
+  get beginner() {
+    return this._beginner;
+  }
+  set beginner(beginner: number) {
+    this._beginner = beginner;
   }
   flush() {
     this.stack = [];
