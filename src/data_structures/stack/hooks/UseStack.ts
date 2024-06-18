@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import Stack from "../classes/Stack";
-
-import { Primitive } from "../types";
-
 import { delay, getSpeed } from "@/lib/utils";
+import { Primitive } from "../types";
 
 import UseAnimation from "./UseAnimation";
 
 export const UseStack = () => {
   const [stack, setStack] = useState<Stack<Primitive> | null>(null);
-  const { handleExitAnimation } = UseAnimation(stack);
+  const { handlePopAnimation, handlePeekAnimation } = UseAnimation(stack);
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isAnimationRunning, setAnimationRunning] = useState(false);
   const [isFillingStack, setIsFillingStack] = useState(false);
+  const [_stop, setStop] = useState(false);
   const [_render, setRender] = useState(false);
   const push = (data: string) => {
     if (stack == null || isAnimationRunning || isStackOverFlow) {
@@ -40,38 +39,63 @@ export const UseStack = () => {
     ) {
       return;
     }
+    // setStop(false);
     const ref = stack.peekNode().ref?.current;
     if (!ref) return;
     setAnimationRunning(true);
-    await handleExitAnimation(ref, () => {
+    await handlePopAnimation(ref, () => {
       ref.style.display = "none";
       stack.pop();
       setAnimationRunning(false);
       render();
     });
   };
+  const peek = async () => {
+    if (
+      stack == null ||
+      isAnimationRunning ||
+      !stack.peekNode() ||
+      !stack.peekNode().ref
+    ) {
+      return;
+    }
+    // setStop(false);
+    const ref = stack.peekNode().ref?.current;
+    if (!ref) return;
+    setAnimationRunning(true);
+    await handlePeekAnimation(ref, () => {});
+    setAnimationRunning(false);
+  };
   const flush = () => {
     if (stack == null) {
       return;
     }
+    setIsFillingStack(false);
     setAnimationRunning(false);
     setIsStackOverFlow(false);
     stack.flush();
   };
 
-  const fillStack = async () => {
+  const fillStack = async (i = 0, spaceRemaining: number) => {
     if (!stack) return;
     setIsFillingStack(true);
+    const _delay = getSpeed(stack.speed) * 1000;
 
-    const spaceRemaining = stack.maxSize - stack.size;
-    for (let i = 0; i < spaceRemaining; i++) {
-      await push("let foo = " + i);
-      await delay(getSpeed(stack.speed) * 1000);
+    if (spaceRemaining <= i || _stop || isStackOverFlow) {
+      setIsFillingStack(false);
+
+      return;
     }
-    setIsFillingStack(false);
+    i++;
+    await push("let foo = " + i);
+    await delay(_delay);
+    await fillStack(i, spaceRemaining);
   };
   const emptyStack = async () => {
-    if (!stack) return;
+    if (!stack || _stop) {
+      flush();
+      return;
+    }
     setIsFillingStack(true);
 
     for (let i = stack?.maxSize - 1; i >= 0; i--) {
@@ -80,9 +104,10 @@ export const UseStack = () => {
 
     setIsFillingStack(false);
   };
-  const stop = () => {
-    console.log("stopping?");
-  };
+  // const stop = () => {
+  //   console.log("stop");
+  //   setStop(true);
+  // };
   const render = (clean = false) => {
     if (clean && stack != null && stack?.size > 0) {
       flush();
@@ -96,11 +121,16 @@ export const UseStack = () => {
     setAnimationRunning(false);
   };
   useEffect(() => {
-    // console.log(isAnimationRunning);
-  }, [isAnimationRunning]);
+    if (!isFillingStack) {
+      setStop(false);
+    }
+  }, [isFillingStack]);
   useEffect(() => {
     setStack(new Stack());
   }, []);
+  // useEffect(() => {
+  //   console.log("STOP: ?", _stop);
+  // }, [_stop]);
 
   return {
     stack,
@@ -108,7 +138,7 @@ export const UseStack = () => {
     fillStack,
     emptyStack,
     push,
-    stop,
+    peek,
     isFillingStack,
     pop,
     flush,

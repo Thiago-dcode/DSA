@@ -11,9 +11,10 @@
   left: 0;
   right: 0;
   margin: auto;
-  animation-timing-function: ease-in-out;
-  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-duration: 1s;
   animation-name: add-node;
+
 }
 
 @keyframes add-node {
@@ -41,5 +42,18 @@
     bottom: var(--end);
     opacity: 0.1;
     background: rgb(220, 38, 38);
+  }
+}
+@keyframes peek-node {
+  0% {
+    background: rgba(250, 204, 21,0.5);
+  }
+
+  80% {
+    background: rgba(250, 204, 1);
+  }
+
+  100% {
+    background: rgba(250, 204, 21,0)
   }
 }

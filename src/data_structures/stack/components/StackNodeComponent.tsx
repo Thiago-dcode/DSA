@@ -8,10 +8,10 @@ type props = {
   id: number,
   height: number,
   onAnimationEnds?: (e: AnimationEvent) => void;
-  handleEntranceAnimation: (ele: HTMLDivElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
+  handlePushAnimation: (ele: HTMLDivElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
 
 }
-const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handleEntranceAnimation }: props) => {
+const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation }: props) => {
   const [isReady, setIsReady] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -19,7 +19,7 @@ const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, han
   useEffect(() => {
     if (ref == null) return
     node.ref = ref;
-    handleEntranceAnimation(ref.current, onAnimationEnds)
+    handlePushAnimation(ref.current, onAnimationEnds)
   }, [ref])
   return (
     <>

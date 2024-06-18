@@ -4,7 +4,7 @@ import { Primitive } from "../types";
 import { getSpeed } from "@/lib/utils";
 
 const UseAnimation = (stack: Stack<Primitive> | null) => {
-  const handleEntranceAnimation = async (
+  const handlePushAnimation = async (
     ref: HTMLDivElement | null,
     onAnimationEnds: ((e: AnimationEvent) => void) | null = null
   ): Promise<boolean> => {
@@ -22,12 +22,13 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
           if (onAnimationEnds) {
             onAnimationEnds(e);
           }
+          ref.offsetHeight;
           resolve(true);
         });
       }
     });
   };
-  const handleExitAnimation = async (
+  const handlePopAnimation = async (
     ref: HTMLElement | null,
     onAnimationEnds: ((e: AnimationEvent) => void) | null = null
   ): Promise<boolean> => {
@@ -47,6 +48,29 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
           if (onAnimationEnds) {
             onAnimationEnds(e);
           }
+          ref.offsetHeight;
+          res(true);
+        });
+      }
+    });
+  };
+  const handlePeekAnimation = async (
+    ref: HTMLElement | null,
+    onAnimationEnds: ((e: AnimationEvent) => void) | null = null
+  ): Promise<boolean> => {
+    return new Promise((res, rej) => {
+      if (ref == null || stack == null || !stack.peekNode()) {
+        rej(false);
+      } else {
+        ref.style.animation = "peek-node";
+       
+        ref.style.animationDuration = 0.5 + "s";
+        ref.addEventListener("animationend", (e) => {
+          if (onAnimationEnds) {
+            onAnimationEnds(e);
+          }
+          ref.style.animation = "none";
+          ref.offsetHeight;
           res(true);
         });
       }
@@ -54,8 +78,9 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
   };
 
   return {
-    handleEntranceAnimation,
-    handleExitAnimation,
+    handlePushAnimation,
+    handlePopAnimation,
+    handlePeekAnimation,
   };
 };
 

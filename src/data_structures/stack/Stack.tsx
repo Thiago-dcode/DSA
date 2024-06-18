@@ -3,7 +3,7 @@ import './style.css';
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
 import StackNodeComponent from "./components/StackNodeComponent";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import Info from "@/components/ui/info";
 import { PopUp } from "@/components/ui/PopUp";
@@ -11,10 +11,10 @@ import { Wrench } from "lucide-react";
 import { PopOverComponent } from "@/components/ui/PopOverComponent";
 import StackConfig from "./components/StackConfig";
 import UseAnimation from "./hooks/UseAnimation";
-import { delay } from "@/lib/utils";
+
 const Stack = () => {
-  const { isFillingStack, stack, render, stop: handleStop, push, pop, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
-  const { handleEntranceAnimation } = UseAnimation(stack);
+  const { isFillingStack, stack, render, push, pop, peek, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
+  const { handlePushAnimation } = UseAnimation(stack);
   const [nodeData, setNodeData] = useState('');
 
   return (
@@ -49,21 +49,27 @@ const Stack = () => {
             }} style={{
               opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
               cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
-            }} type="submit" className="bg-red-400  hover:bg-red-600" >pop</Button>}
-          </div>
+            }} type="submit" className="bg-red-400  hover:bg-red-600" >pop</Button>
+
+
+            }
+            {stack._getStack_().length > 0 && <Button style={{
+              opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
+              cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
+            }} onClick={async () => {
+              if (isFillingStack || isStackOverFlow) return;
+              await peek();
+
+            }} type="submit" className="bg-yellow-400  hover:bg-yellow-600" variant={"default"}>peek</Button>
+            } </div>
           <div className=" flex items-center gap-2">
-            {isFillingStack && <Button style={{
 
-            }} onClick={() => {
-              handleStop()
-
-            }} type="submit" className="bg-red-400  hover:bg-red-600" variant={"default"}>stop</Button>}
             <Button style={{
               opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
               cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
             }} onClick={async () => {
               if (isFillingStack || isStackOverFlow) return;
-              await fillStack();
+              await fillStack(0, stack.maxSize - stack.size);
 
               await emptyStack();
 
@@ -74,7 +80,24 @@ const Stack = () => {
         }
         <div className="flex  justify-between w-full px-4">
           <Info title="STACK" text={<>
-            A stack is a <b>linear</b> data structure that follows the <b>Last In, First Out (LIFO)</b> principle. This means that <b>the last element added to the stack is the first one to be removed</b>. Stacks are commonly used in various algorithms and applications, such as managing function calls, undo mechanisms in software, and evaluating expressions.</>} className="self-start" />
+            A stack is <b>a linear data structure</b> that follows the <b>Last In, First Out (LIFO)</b> principle. This means that the last element added to the stack is the first one to be removed. Stacks are commonly used in various algorithms and applications, such as managing function calls, undo mechanisms in software, and evaluating expressions.
+
+
+            <h4 className="font-semibold py-2"> Key Operations of a Stack:</h4>
+
+            <ul>
+
+              <li>
+                <b className="font-semibold text-green-400"> Push: </b>This operation <b>adds an element to the top of the stack</b>. When a new element is pushed onto the stack, it becomes the new top element. The previous top element is now just below the new top element.
+              </li>
+
+              <li>
+                <b className="font-semibold text-red-400"> Pop: </b>This operation <b>removes and returns the top element of the stack</b>. Since the stack follows the LIFO principle, the element that was most recently added is the one that is removed. If the stack is empty, attempting to pop an element will usually result in an error or an undefined value.
+              </li>
+
+              <li> <b className="font-semibold text-yellow-400"> Peek: </b> This operation <b>returns the top element of the stack without removing it</b>. It allows you to inspect the element at the top of the stack without modifying the stack's state. This is useful when you need to see what the top element is without altering the stack.</li>
+
+            </ul></>} className="self-start" />
           {!isStackOverFlow && !isFillingStack && !isAnimationRunning && <div>
             <PopOverComponent content={
               <StackConfig render={render} stack={stack} />
@@ -102,7 +125,7 @@ const Stack = () => {
               {
                 stack._getStack_().length > 0 && stack._getStack_().map((node, i) => {
                   return (
-                    <StackNodeComponent onAnimationEnds={onAnimationEnds} handleEntranceAnimation={handleEntranceAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
+                    <StackNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
                   )
                 })
               }
