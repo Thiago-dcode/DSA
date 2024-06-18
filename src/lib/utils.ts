@@ -1,4 +1,4 @@
-import { speed } from "@/data_structures/stack/types";
+import { speed } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

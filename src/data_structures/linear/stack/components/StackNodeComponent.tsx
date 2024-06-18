@@ -31,7 +31,7 @@ const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, han
 
         }
       } className="stack-node text-center flex items-center justify-center overflow-auto rounded-lg">
-        {node.getData()}
+        {node.data}
       </div>}
 
     </>

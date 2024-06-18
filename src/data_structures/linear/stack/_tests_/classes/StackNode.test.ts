@@ -4,17 +4,17 @@ import StackNode from '../../classes/StackNode';
 describe("StackNode class test",()=>{
 
     it("Should accept numbers",()=>{
-        const node = new StackNode<number>(50);
-        expect(node.getData()).toBe(50);
-        node.setData(75);
-        expect(node.getData()).toBe(75);
+        const node = new StackNode<number>(50,0);
+        expect(node.data).toBe(50);
+        node.data = 75;
+        expect(node.data).toBe(75);
 
     })
     it("Should accept Strings",()=>{
-        const node = new StackNode<string>("hello");
-        expect(node.getData()).toBe("hello");
-        node.setData("bye");
-        expect(node.getData()).toBe("bye");
+        const node = new StackNode<string>("hello",0);
+        expect(node.data).toBe("hello");
+        node.data = "bye";
+        expect(node.data).toBe("bye");
 
     })
 
