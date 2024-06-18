@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Stack from "../classes/Stack";
 import { delay, getSpeed } from "@/lib/utils";
-import { Primitive } from "../types";
+import { Primitive } from "../../../../types";
 
 import UseAnimation from "./UseAnimation";
 

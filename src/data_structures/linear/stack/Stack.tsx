@@ -1,4 +1,4 @@
-import Main from "../../components/container/Main";
+import Main from "../../../components/container/Main";
 import './style.css';
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";

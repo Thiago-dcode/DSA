@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import Stack from "../classes/Stack";
-import { Primitive } from "../types";
+import { Primitive } from "../../../../types";
 import { getSpeed } from "@/lib/utils";
 
 const UseAnimation = (stack: Stack<Primitive> | null) => {

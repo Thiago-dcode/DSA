@@ -1,5 +1,5 @@
 import { MutableRefObject, useRef } from "react";
-import { Primitive } from "../types";
+import { Primitive } from "../../../../types";
 
 export default class StackNode<T extends Primitive> {
   private data: T;

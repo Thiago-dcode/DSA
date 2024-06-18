@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import React from 'react'
 import Stack from '../classes/Stack'
-import { Primitive } from '../types'
+import { Primitive } from '../../../../types'
 
 export default function StackConfig({
     stack,

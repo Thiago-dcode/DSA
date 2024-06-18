@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import StackNode from '../classes/StackNode'
-import { Primitive } from '../types'
+import { Primitive } from '../../../../types'
 
 type props = {
 

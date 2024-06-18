@@ -1,6 +1,6 @@
 
 import { Link, Route, Routes } from 'react-router-dom'
-import Stack from './data_structures/stack/Stack'
+import Stack from './data_structures/linear/stack/Stack'
 import Home from './home/Home'
 import DataStructures from './data_structures/DataStructures'
 import {globalConfig} from './config'

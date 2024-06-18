@@ -1,5 +1,5 @@
 import StackNode from "./StackNode";
-import { Primitive, speed } from "../types";
+import { Primitive, speed } from "../../../../types";
 
 export default class Stack<T extends Primitive> {
   private stack: StackNode<T>[];
