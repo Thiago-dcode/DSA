@@ -3,7 +3,7 @@ import './style.css';
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
 import StackNodeComponent from "./components/StackNodeComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import Info from "@/components/ui/info";
 import { PopUp } from "@/components/ui/PopUp";
@@ -11,19 +11,32 @@ import { Wrench } from "lucide-react";
 import { PopOverComponent } from "@/components/ui/PopOverComponent";
 import StackConfig from "./components/StackConfig";
 import UseAnimation from "./hooks/UseAnimation";
+import Properties from "@/components/app/Properties";
 
 const Stack = () => {
   const { isFillingStack, stack, render, push, pop, peek, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
   const { handlePushAnimation } = UseAnimation(stack);
   const [nodeData, setNodeData] = useState('');
+  const [properties, setProperties] = useState<{
+    [key: string]: string
+  }>({})
+  useEffect(() => {
+    if (!stack) return;
+    setProperties({
+      'size': stack.size + '',
+      'isEmpty': stack.isEmpty.toString(),
+      'isFull': stack.isFull.toString(),
+    })
 
+  }, [stack, isAnimationRunning, isStackOverFlow, isFillingStack])
   return (
     <>
-      {stack && <Main>
-        {<div className="border-2 border-white w-full flex items-center justify-between gap-2 p-4">
+      {stack && <Main className="">
+
+        {/* //ACTION BUTTONS: */}
+
+        {<div className="border-2 border-white w-full flex items-center justify-between gap-1 p-4">
           <div className="flex  items-center gap-2 justify-center">
-
-
             <div className="flex max-w-sm items-center space-x-2">
               <Input defaultValue={nodeData} placeholder="let x = 50" className="text-black" onChange={(e) => {
                 setNodeData(e.target.value)
@@ -43,8 +56,6 @@ const Stack = () => {
               if (isFillingStack || isStackOverFlow) return;
 
               await pop();
-
-
 
             }} style={{
               opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
@@ -78,6 +89,10 @@ const Stack = () => {
           </div>
         </div>
         }
+        {/* //STACK STATIC PROPERTIES: */}
+        <Properties properties={properties} />
+
+        {/* //EXTRA INFO AND CONFIG: */}
         <div className="flex  justify-between w-full px-4">
           <Info title="STACK" text={<>
             A stack is <b>a linear data structure</b> that follows the <b>Last In, First Out (LIFO)</b> principle. This means that the last element added to the stack is the first one to be removed. Stacks are commonly used in various algorithms and applications, such as managing function calls, undo mechanisms in software, and evaluating expressions.

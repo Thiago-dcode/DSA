@@ -1,10 +1,11 @@
+import { cn } from '@/lib/utils'
 import React from 'react'
 
 
 
-export default function Main({ children }: { children: React.ReactNode }) {
+export default function Main({ children,className = '' }: { children: React.ReactNode,className?:string }) {
   return (
-    <main className='main-container'>
+    <main className={cn('main-container', className)}>
         {children}
     </main>
   )

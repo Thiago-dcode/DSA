@@ -1,8 +1,6 @@
 import StackNode from "./StackNode";
-import { Primitive, speed } from "../../../../types";
-import LinearNode from "../../_classes/Node";
+import { Primitive } from "../../../../types";
 import LinearDs from "../../_classes/LinearDs";
-
 export default class Stack<T extends Primitive> extends LinearDs<T> {
   constructor(data: T[] = []) {
     super(data);

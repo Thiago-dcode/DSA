@@ -1,8 +1,7 @@
-
 import { Primitive, speed } from "@/types";
 import LinearNode from "./Node";
 
-export default class LinearDs<T extends Primitive> {
+export default abstract class LinearDs<T extends Primitive> {
   protected _array: LinearNode<T>[];
   private _width: number;
   private _maxSize;
@@ -28,7 +27,12 @@ export default class LinearDs<T extends Primitive> {
       );
     });
   }
-
+  get isEmpty() {
+    return this.size == 0;
+  }
+  get isFull() {
+    return this.size == this.maxSize;
+  }
   get nodeHeight() {
     return this._nodeHeight;
   }
