@@ -1,5 +1,6 @@
 import { Primitive, speed } from "@/types";
 import LinearNode from "./Node";
+import Position from "@/lib/classes/Position";
 
 export default abstract class LinearDs<T extends Primitive> {
   protected _array: LinearNode<T>[];
@@ -22,7 +23,10 @@ export default abstract class LinearDs<T extends Primitive> {
       this._array.push(
         new LinearNode<T>(
           ele,
-          (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+          new Position(
+            0,
+            (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+          )
         )
       );
     });

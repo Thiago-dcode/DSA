@@ -12,7 +12,6 @@ type props = {
 
 }
 const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation }: props) => {
-  const [isReady, setIsReady] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -26,7 +25,7 @@ const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, han
       {node && <div ref={ref} id={`stackNode-${id}`} style={
         {
           animation: '',
-          bottom: `${node.position}px`,
+          bottom: `${node.position.y}px`,
           height: `${height}px`,
 
         }

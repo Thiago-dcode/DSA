@@ -1,6 +1,7 @@
 import { Primitive } from "@/types";
 import LinearDs from "../../_classes/LinearDs";
 import QueueNode from "./QueueNode";
+import Position from "@/lib/classes/Position";
 
 export default class Queue<T extends Primitive> extends LinearDs<T> {
   constructor(data: T[] = []) {
@@ -11,6 +12,14 @@ export default class Queue<T extends Primitive> extends LinearDs<T> {
     if (this.size >= this.maxSize) {
       return;
     }
-    super.array.push(new QueueNode(data, this.nodeHeight + this.nodeSpacing));
+    super.array.push(
+      new QueueNode(
+        data,
+        new Position(
+          0,
+          (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+        )
+      )
+    );
   }
 }

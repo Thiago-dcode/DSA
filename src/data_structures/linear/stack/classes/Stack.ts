@@ -1,6 +1,8 @@
 import StackNode from "./StackNode";
 import { Primitive } from "../../../../types";
+
 import LinearDs from "../../_classes/LinearDs";
+import Position from "@/lib/classes/Position";
 export default class Stack<T extends Primitive> extends LinearDs<T> {
   constructor(data: T[] = []) {
     super(data);
@@ -12,7 +14,10 @@ export default class Stack<T extends Primitive> extends LinearDs<T> {
     this.array.push(
       new StackNode(
         element,
-        (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+        new Position(
+          0,
+          (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
+        )
       )
     );
   }
