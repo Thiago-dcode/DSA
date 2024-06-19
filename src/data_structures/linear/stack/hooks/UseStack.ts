@@ -11,7 +11,6 @@ export const UseStack = () => {
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isAnimationRunning, setAnimationRunning] = useState(false);
   const [isFillingStack, setIsFillingStack] = useState(false);
-  const [_stop, setStop] = useState(false);
   const [_render, setRender] = useState(false);
   const push = (data: string) => {
     if (stack == null || isAnimationRunning || isStackOverFlow) {
@@ -81,7 +80,7 @@ export const UseStack = () => {
     setIsFillingStack(true);
     const _delay = getSpeed(stack.speed) * 1000;
 
-    if (spaceRemaining <= i || _stop || isStackOverFlow) {
+    if (spaceRemaining <= i || isStackOverFlow) {
       setIsFillingStack(false);
 
       return;
@@ -92,7 +91,7 @@ export const UseStack = () => {
     await fillStack(i, spaceRemaining);
   };
   const emptyStack = async () => {
-    if (!stack || _stop) {
+    if (!stack) {
       flush();
       return;
     }
@@ -111,7 +110,6 @@ export const UseStack = () => {
   const render = (clean = false) => {
     if (clean && stack != null && stack?.size > 0) {
       flush();
-      return;
     }
     setRender((prev) => !prev);
   };
@@ -120,11 +118,6 @@ export const UseStack = () => {
   ) => {
     setAnimationRunning(false);
   };
-  useEffect(() => {
-    if (!isFillingStack) {
-      setStop(false);
-    }
-  }, [isFillingStack]);
   useEffect(() => {
     setStack(new Stack());
   }, []);
@@ -139,6 +132,7 @@ export const UseStack = () => {
     emptyStack,
     push,
     peek,
+    _render,
     isFillingStack,
     pop,
     flush,

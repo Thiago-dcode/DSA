@@ -14,7 +14,7 @@ import UseAnimation from "./hooks/UseAnimation";
 import Properties from "@/components/app/Properties";
 
 const Stack = () => {
-  const { isFillingStack, stack, render, push, pop, peek, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
+  const { isFillingStack, stack, _render, render, push, pop, peek, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
   const { handlePushAnimation } = UseAnimation(stack);
   const [nodeData, setNodeData] = useState('');
   const [properties, setProperties] = useState<{
@@ -26,9 +26,10 @@ const Stack = () => {
       'size': stack.size + '',
       'isEmpty': stack.isEmpty.toString(),
       'isFull': stack.isFull.toString(),
+      'Stack size': stack.maxSize + '',
     })
 
-  }, [stack, isAnimationRunning, isStackOverFlow, isFillingStack])
+  }, [stack, isAnimationRunning, isStackOverFlow, isFillingStack, _render])
   return (
     <>
       {stack && <Main className="">
@@ -95,8 +96,7 @@ const Stack = () => {
         {/* //EXTRA INFO AND CONFIG: */}
         <div className="flex  justify-between w-full px-4">
           <Info title="STACK" text={<>
-            A stack is <b>a linear data structure</b> that follows the <b>Last In, First Out (LIFO)</b> principle. This means that the last element added to the stack is the first one to be removed. Stacks are commonly used in various algorithms and applications, such as managing function calls, undo mechanisms in software, and evaluating expressions.
-
+            <p>  A stack is <b>a linear data structure</b> that follows the <b>Last In, First Out (LIFO)</b> principle. This means that the last element added to the stack is the first one to be removed. Stacks are commonly used in various algorithms and applications, such as managing function calls, undo mechanisms in software, and evaluating expressions.</p>
 
             <h4 className="font-semibold py-2"> Key Operations of a Stack:</h4>
 
@@ -140,7 +140,7 @@ const Stack = () => {
               {
                 stack.array.length > 0 && stack.array.map((node, i) => {
                   return (
-                    <StackNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
+                    <StackNodeComponent  onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
                   )
                 })
               }

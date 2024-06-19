@@ -9,9 +9,9 @@ function Properties({ properties }: {
             <div className="flex  items-start w-full flex-wrap  gap-4">
 
                 {
-                    properties && Object.entries(properties).map(([key, value]) => {
+                    properties && Object.entries(properties).map(([key, value], i) => {
                         return (
-                            <div className="bg-white px-4 py-1 text-black rounded-md">
+                            <div key={key + i} className="bg-white px-4 py-1 text-black rounded-md">
                                 <h4 className=" font-bold text-lg">{key}: {value}</h4>
                             </div>
                         )
