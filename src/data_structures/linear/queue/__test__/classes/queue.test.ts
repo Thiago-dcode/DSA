@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import Queue from "../classes/Queue";
+import Queue from "../../classes/Queue";
 
 describe("Testing Queue class", () => {
   it("Should initialize with a empty queue", () => {

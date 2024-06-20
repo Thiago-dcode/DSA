@@ -1,12 +1,12 @@
 import { MutableRefObject } from "react";
-import { Primitive } from "@/types";
+import { Primitive, Ref } from "@/types";
 import Position from "@/lib/classes/Position";
 
-export default class LinearNode<T extends Primitive> {
+export default class Node<T extends Primitive> {
   private _data: T;
-  private _ref: MutableRefObject<null | HTMLElement> | null;
+  private _ref: Ref;
   private _position: Position;
-  constructor(data: T, position: Position, ref = null) {
+  constructor(data: T, position: Position, ref: Ref = null) {
     this._ref = ref;
     this._position = position;
     this._data = data;
