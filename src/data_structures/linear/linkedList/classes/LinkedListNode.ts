@@ -10,10 +10,10 @@ export default class LinkedListNode<T extends Primitive> extends Node<T> {
     super(data, position, ref);
   }
 
-  get prev() {
+  get prev(): LinkedListNode<T> | null {
     return this._prev;
   }
-  get next() {
+  get next(): LinkedListNode<T> | null {
     return this._next;
   }
   set prev(prev: LinkedListNode<T> | null) {
