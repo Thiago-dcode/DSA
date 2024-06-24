@@ -177,13 +177,11 @@ describe("Testing findNode method in linkedList", () => {
     for (let i = 0; i < 1000; i++) {
       linkedList.add(i);
     }
-    expect(linkedList.size).toBe(1000);
-    expect(linkedList.getFirst()).toBe(0);
-    expect(linkedList.head?.next?.data).toBe(1);
-    expect(linkedList.getLast()).toBe(999);
-    expect(linkedList.tail?.prev?.data).toBe(998);
-
     for (let i = 0; i < 1000; i++) {
+      const node = linkedList.findNode(i);
+      expect(node?.data).toBe(i);
+    }
+    for (let i = 999; i >= 0; i--) {
       const node = linkedList.findNode(i);
       expect(node?.data).toBe(i);
     }
