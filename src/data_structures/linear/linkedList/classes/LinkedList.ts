@@ -146,6 +146,57 @@ export default class LinkedList<T extends Primitive> {
     }
     this._tail = node;
   }
+
+  delete(index: number) {
+    this.throwIfOutOfTheBounds(index, false);
+
+    if (index === 0) {
+      this.deleteFirst();
+      return;
+    }
+    if (index === this.size - 1) {
+      this.deleteLast();
+      return;
+    }
+    if (this.isTail(index)) {
+      let position = this.size - 1;
+      let node = this.tail;
+      do {
+        if (position == index && node && node.prev && node.next) {
+          node.prev.next = node.next;
+          node.next.prev = node.prev;
+        }
+        if (node) {
+          node = node?.prev;
+        }
+        position--;
+      } while (position >= 0 && node);
+    } else if (!this.isTail(index)) {
+      let position = 0;
+      let node = this._head;
+      do {
+        if (position == index && node && node.prev && node.next) {
+          node.prev.next = node.next;
+          node.next.prev = node.prev;
+        }
+        if (node) {
+          node = node?.next;
+        }
+        position++;
+      } while (position < this.size || node);
+    }
+    this._size--;
+  }
+  deleteFirst() {
+    if (!this.head) return;
+    this._head = this.head.next ? this.head.next : null;
+    this._size--;
+  }
+  deleteLast() {
+    if (!this._tail) return;
+    this._tail = this._tail.prev ? this._tail.prev : null;
+    this._size--;
+  }
   private throwIfOutOfTheBounds(index: number, includesSize = true) {
     if (index < 0 || index > (includesSize ? this.size : this.size - 1)) {
       //throw error

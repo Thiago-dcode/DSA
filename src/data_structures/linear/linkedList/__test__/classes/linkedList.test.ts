@@ -215,14 +215,47 @@ describe("Testing linkedList get method", () => {
   });
 });
 
-
-describe("Testing delete method in linkedList",()=>{
-
-
+describe("Testing delete method in linkedList", () => {
   //TODO: implement and test delete method
-  it("Should delete head and tail",()=>{
-
-    
-  })
-
-})
+  it("Should delete head and tail", () => {
+    const linkedList = new LinkedList();
+    for (let i = 0; i < 10; i++) {
+      linkedList.add(i);
+    }
+    expect(linkedList.size).toBe(10);
+    linkedList.delete(0);
+    expect(linkedList.getFirst()).toBe(1);
+    expect(linkedList.size).toBe(9);
+    for (let i = 1; i <= linkedList.size; i++) {
+      expect(linkedList.get(i - 1)).toBe(i);
+    }
+    expect(linkedList.getLast()).toBe(9);
+    linkedList.delete(linkedList.size - 1);
+    expect(linkedList.getLast()).toBe(8);
+    expect(linkedList.size).toBe(8);
+    for (let i = 0; i < 8; i++) {
+      linkedList.deleteLast();
+    }
+    expect(linkedList.size).toBe(0);
+  });
+  it("Should delete any position", () => {
+    const linkedList = new LinkedList();
+    for (let i = 0; i < 10; i++) {
+      linkedList.add(i);
+    }
+    expect(linkedList.head?.next?.data).toBe(1);
+    linkedList.delete(1);
+    expect(linkedList.head?.next?.data).toBe(2);
+    expect(linkedList.size).toBe(9);
+    expect(linkedList.head?.next?.next?.data).toBe(3);
+    linkedList.delete(2);
+    expect(linkedList.head?.next?.next?.data).toBe(4);
+    expect(linkedList.tail?.prev?.data).toBe(8);
+    linkedList.delete(linkedList.size-2);
+    expect(linkedList.tail?.prev?.data).toBe(7);
+    expect(linkedList.tail?.prev?.prev?.data).toBe(6);
+    linkedList.delete(linkedList.size-3);
+    expect(linkedList.tail?.prev?.prev?.data).toBe(5);
+    expect(linkedList.size).toBe(6)
+  });
+});
