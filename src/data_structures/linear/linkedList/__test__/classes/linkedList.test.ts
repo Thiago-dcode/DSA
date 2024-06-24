@@ -171,6 +171,24 @@ describe("Testing LinkedList add method", () => {
   });
 });
 
+describe("Testing findNode method in linkedList", () => {
+  it("should find nodes", () => {
+    const linkedList = new LinkedList();
+    for (let i = 0; i < 1000; i++) {
+      linkedList.add(i);
+    }
+    expect(linkedList.size).toBe(1000);
+    expect(linkedList.getFirst()).toBe(0);
+    expect(linkedList.head?.next?.data).toBe(1);
+    expect(linkedList.getLast()).toBe(999);
+    expect(linkedList.tail?.prev?.data).toBe(998);
+
+    for (let i = 0; i < 1000; i++) {
+      const node = linkedList.findNode(i);
+      expect(node?.data).toBe(i);
+    }
+  });
+});
 describe("Testing linkedList get method", () => {
   it("should throw error when index outofbounds", () => {
     const linkedList = new LinkedList<number>();
@@ -251,11 +269,11 @@ describe("Testing delete method in linkedList", () => {
     linkedList.delete(2);
     expect(linkedList.head?.next?.next?.data).toBe(4);
     expect(linkedList.tail?.prev?.data).toBe(8);
-    linkedList.delete(linkedList.size-2);
+    linkedList.delete(linkedList.size - 2);
     expect(linkedList.tail?.prev?.data).toBe(7);
     expect(linkedList.tail?.prev?.prev?.data).toBe(6);
-    linkedList.delete(linkedList.size-3);
+    linkedList.delete(linkedList.size - 3);
     expect(linkedList.tail?.prev?.prev?.data).toBe(5);
-    expect(linkedList.size).toBe(6)
+    expect(linkedList.size).toBe(6);
   });
 });

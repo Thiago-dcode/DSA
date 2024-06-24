@@ -13,42 +13,14 @@ export default class LinkedList<T extends Primitive> {
   }
 
   get(index: number): T | null {
-    this.throwIfOutOfTheBounds(index, false);
-    if (this.size === 0) return null;
     if (index === 0) {
       return this.getFirst();
     }
     if (index === this.size - 1) {
       return this.getLast();
     }
-
-    if (this.isTail(index)) {
-      let position = this._size - 1;
-      let node = this._tail;
-      do {
-        if (position == index && node) {
-          return node.data;
-        }
-        if (node) {
-          node = node.prev;
-        }
-        position--;
-      } while (position >= 0 || node);
-    } else if (!this.isTail(index)) {
-      let position = 0;
-      let node = this._head;
-      do {
-        if (position == index && node) {
-          return node.data;
-        }
-        if (node) {
-          node = node?.next;
-        }
-        position++;
-      } while (position < this.size || node);
-    }
-
-    return null;
+    const node = this.findNode(index);
+    return node ? node.data : node;
   }
   getFirst(): T | null {
     if (!this.head) return null;
@@ -60,54 +32,23 @@ export default class LinkedList<T extends Primitive> {
   }
 
   add(data: T, index: number = this._size) {
-    this.throwIfOutOfTheBounds(index);
     const newNode = new LinkedListNode(data, new Position(0, 0));
     if (!this._head) {
       this._head = newNode;
       this._tail = newNode;
     } else {
       if (index === this._size) {
-        //add at the end
         this._addLast(newNode);
       } else if (index === 0) {
         this._addFirst(newNode);
-      } else if (this.isTail(index)) {
-        let position = this._size - 1;
-        let node = this._tail;
-        do {
-          if (position == index) {
-            newNode.next = node;
-            if (node?.prev) {
-              newNode.prev = node?.prev;
-              node.prev.next = newNode;
-              node.prev = newNode;
-            }
-            break;
-          }
-          if (node) {
-            node = node?.prev;
-          }
-          position--;
-        } while (position >= 0 || node);
-      } else if (!this.isTail(index)) {
-        //start looking for the position from the head
-        let position = 0;
-        let node = this._head;
-        do {
-          if (position == index) {
-            newNode.next = node;
-            if (node?.prev) {
-              newNode.prev = node?.prev;
-              node.prev.next = newNode;
-              node.prev = newNode;
-            }
-            break;
-          }
-          if (node && node.next) {
-            node = node.next;
-          }
-          position++;
-        } while (position < this.size || node);
+      } else {
+        const node = this.findNode(index);
+        newNode.next = node;
+        if (node?.prev) {
+          newNode.prev = node.prev;
+          node.prev.next = newNode;
+          node.prev = newNode;
+        }
       }
     }
     this._size++;
@@ -148,8 +89,6 @@ export default class LinkedList<T extends Primitive> {
   }
 
   delete(index: number) {
-    this.throwIfOutOfTheBounds(index, false);
-
     if (index === 0) {
       this.deleteFirst();
       return;
@@ -157,33 +96,12 @@ export default class LinkedList<T extends Primitive> {
     if (index === this.size - 1) {
       this.deleteLast();
       return;
-    }
-    if (this.isTail(index)) {
-      let position = this.size - 1;
-      let node = this.tail;
-      do {
-        if (position == index && node && node.prev && node.next) {
-          node.prev.next = node.next;
-          node.next.prev = node.prev;
-        }
-        if (node) {
-          node = node?.prev;
-        }
-        position--;
-      } while (position >= 0 && node);
-    } else if (!this.isTail(index)) {
-      let position = 0;
-      let node = this._head;
-      do {
-        if (position == index && node && node.prev && node.next) {
-          node.prev.next = node.next;
-          node.next.prev = node.prev;
-        }
-        if (node) {
-          node = node?.next;
-        }
-        position++;
-      } while (position < this.size || node);
+    } else {
+      const node = this.findNode(index);
+      if (node?.prev && node.next) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+      }
     }
     this._size--;
   }
@@ -204,6 +122,36 @@ export default class LinkedList<T extends Primitive> {
         `Index: ${index} doesn't exist on linkedList.size: ${this.size}`
       );
     }
+  }
+  findNode(index: number) {
+    this.throwIfOutOfTheBounds(index, false);
+    let node: LinkedListNode<T> | null = null;
+    if (this.isTail(index)) {
+      let position = this._size - 1;
+      node = this._tail;
+      do {
+        if (position == index) {
+          break;
+        }
+        if (node) {
+          node = node.prev;
+        }
+        position--;
+      } while (position >= 0 || node);
+    } else if (!this.isTail(index)) {
+      let position = 0;
+      node = this._head;
+      do {
+        if (position === index) {
+          break;
+        }
+        if (node) {
+          node = node.next;
+        }
+        position++;
+      } while (position < this.size || node);
+    }
+    return node;
   }
   private isTail(index: number): boolean {
     if (index >= this._size) return true;
