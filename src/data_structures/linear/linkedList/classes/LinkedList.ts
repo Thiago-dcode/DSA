@@ -1,6 +1,5 @@
 import { Primitive } from "@/types";
 import LinkedListNode from "./LinkedListNode";
-import Node from "../../_classes/Node";
 import Position from "@/lib/classes/Position";
 import IndexOutOfBoundsError from "@/lib/errors/IndexOutOfTheBondError";
 
