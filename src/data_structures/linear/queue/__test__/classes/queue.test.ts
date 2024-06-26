@@ -19,12 +19,48 @@ describe("Testing Queue class", () => {
   });
   it("Should enqueue ", () => {
     const queue = new Queue<number>();
-    queue.maxSize = 1000;
+    queue.maxSize = 100;
     for (let i = 0; i < queue.maxSize; i++) {
       queue.enqueue(i);
     }
     for (let i = 0; i < queue.toArray.length; i++) {
       expect(i).toBe(queue.toNodeArray[i].data);
     }
+  });
+  it("Should dequeue ", () => {
+    const queue = new Queue<number>();
+    queue.maxSize = 100;
+
+    for (let i = 0; i < queue.maxSize; i++) {
+      queue.enqueue(i);
+    }
+    for (let i = 0; i < queue.maxSize; i++) {
+      expect(queue.toArray[i]).toBe(i);
+    }
+    queue.dequeue();
+    expect(queue.toArray[0]).toBe(1);
+    queue.dequeue();
+    expect(queue.toArray[0]).toBe(2);
+    expect(queue.toArray.length).toBe(98);
+
+    expect(queue.size).toBe(98);
+  });
+  it("Should peek ", () => {
+    const queue = new Queue<number>();
+    queue.maxSize = 100;
+    for (let i = 0; i < queue.maxSize; i++) {
+      queue.enqueue(i);
+    }
+    expect(queue.peek()).toBe(0);
+    expect(queue.peekNode()?.data).toBe(0);
+    queue.dequeue();
+    expect(queue.peek()).toBe(1);
+    expect(queue.peekNode()?.data).toBe(1);
+    queue.dequeue();
+    queue.dequeue();
+    queue.dequeue();
+    queue.dequeue();
+    expect(queue.peek()).toBe(5);
+    expect(queue.peekNode()?.data).toBe(5);
   });
 });

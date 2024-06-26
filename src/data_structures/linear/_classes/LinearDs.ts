@@ -2,6 +2,7 @@ import { Primitive, speed } from "@/types";
 import LinearNode from "./Node";
 import Position from "@/lib/classes/Position";
 import LinkedList from "../linkedList/classes/LinkedList";
+import NotAllowedSizeError from "@/lib/errors/MaxSizeExceededError";
 
 export default abstract class LinearDs<T extends Primitive> {
   protected linkedList: LinkedList<T>;
@@ -49,9 +50,10 @@ export default abstract class LinearDs<T extends Primitive> {
     return this._maxSize;
   }
   set maxSize(max: number) {
-    if (max < 1 || max > 30) {
-      return;
+    if (max > 100 || max < 1) {
+      throw new NotAllowedSizeError("a size must be between 1 and 100");
     }
+    
     this.beginner = max * this.nodeHeight;
     this._maxSize = max;
   }

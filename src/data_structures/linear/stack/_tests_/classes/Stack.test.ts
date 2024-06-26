@@ -17,7 +17,7 @@ describe("Stack class test", () => {
   });
   it("Should push", () => {
     const stack = new Stack<number>();
-    stack.maxSize = 1000;
+    stack.maxSize = 100;
     for (let i = 0; i < stack.maxSize; i++) {
       stack.push(i);
     }
@@ -43,7 +43,7 @@ describe("Stack class test", () => {
   });
   it("Should peek", () => {
     const stack = new Stack<number>();
-    stack.maxSize = 200;
+    stack.maxSize = 100;
     expect(stack.peek()).toBe(null);
 
     for (let i = 0; i < stack.maxSize; i++) {
