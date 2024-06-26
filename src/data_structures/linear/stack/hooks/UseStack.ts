@@ -46,6 +46,7 @@ export const UseStack = () => {
     await handlePopAnimation(ref, () => {
       ref.style.display = "none";
       stack.pop();
+      render()
       setAnimationRunning(false);
     });
   };
