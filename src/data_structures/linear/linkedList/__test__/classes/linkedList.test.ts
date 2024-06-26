@@ -274,6 +274,21 @@ describe("Testing delete method in linkedList", () => {
     expect(linkedList.tail?.prev?.prev?.data).toBe(5);
     expect(linkedList.size).toBe(6);
   });
+  it("should delete last", () => {
+    const linkedList = new LinkedList();
+    for (let i = 0; i < 10; i++) {
+      linkedList.add(i);
+    }
+    expect(linkedList.size).toBe(10);
+    for (let i = 0; i < 10; i++) {
+      linkedList.deleteLast();
+    }
+    expect(linkedList.size).toBe(0);
+    expect(linkedList.getFirst()).toBe(null);
+    expect(linkedList.getLast()).toBe(null);
+    expect(linkedList.head).toBe(null);
+    expect(linkedList.tail).toBe(null);
+  });
 });
 
 describe("Should convert to array", () => {

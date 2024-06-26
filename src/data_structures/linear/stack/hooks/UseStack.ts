@@ -16,7 +16,7 @@ export const UseStack = () => {
     if (stack == null || isAnimationRunning || isStackOverFlow) {
       return;
     }
-    console.log("STACK size:", stack.size)
+    console.log("STACK size:", stack.size);
     setIsStackOverFlow(false);
     if (stack.size >= stack.maxSize) {
       setIsStackOverFlow(true);
@@ -47,7 +47,6 @@ export const UseStack = () => {
       ref.style.display = "none";
       stack.pop();
       setAnimationRunning(false);
-      render();
     });
   };
   const peek = async () => {
@@ -78,6 +77,7 @@ export const UseStack = () => {
 
   const fillStack = async (i = 0, spaceRemaining: number) => {
     if (!stack) return;
+    console.log(stack.toNodeArray);
     setIsFillingStack(true);
     const _delay = getSpeed(stack.speed) * 1000;
 

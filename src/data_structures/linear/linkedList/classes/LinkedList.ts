@@ -113,14 +113,28 @@ export default class LinkedList<T extends Primitive> {
   deleteFirst() {
     if (!this._head) return null;
     const data = this._head.data;
-    this._head = this._head.next ? this._head.next : null;
+    if (this.head?.next) {
+      this._head = this.head.next;
+      this._head.prev = null;
+    } else {
+      this._head = null;
+      this._tail = null;
+    }
     this._size--;
     return data;
   }
   deleteLast() {
     if (!this._tail) return null;
+
     const data = this._tail.data;
-    this._tail = this._tail.prev ? this._tail.prev : null;
+
+    if (this._tail.prev) {
+      this._tail = this._tail.prev;
+      this._tail.next = null;
+    } else {
+      this._head = null;
+      this._tail = null;
+    }
     this._size--;
     return data;
   }
@@ -169,7 +183,7 @@ export default class LinkedList<T extends Primitive> {
     this._size = 0;
   }
   toArray() {
-    const array:T[] = new Array(this.size);
+    const array: T[] = new Array(this.size);
     let node = this._head;
     let i = 0;
     while (node) {
