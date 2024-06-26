@@ -17,7 +17,7 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
           ref.style.animationDuration = animationDuration;
         }
         ref.style.setProperty("--start", `${stack?.beginner}px`);
-        ref.style.setProperty("--end", `${stack?.peekNode().position.y}px`);
+        ref.style.setProperty("--end", `${stack?.peekNode()?.position.y}px`);
         ref.addEventListener("animationend", (e) => {
           if (onAnimationEnds) {
             onAnimationEnds(e);
@@ -36,7 +36,7 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
       if (ref == null || stack == null || !stack.peekNode()) {
         rej(false);
       } else {
-        ref.style.setProperty("--start", `${stack?.peekNode().position.y}px`);
+        ref.style.setProperty("--start", `${stack?.peekNode()?.position.y}px`);
         ref.style.setProperty(
           "--end",
           `${stack?.maxSize * stack.nodeHeight}px`
@@ -63,7 +63,7 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
         rej(false);
       } else {
         ref.style.animation = "peek-node";
-       
+
         ref.style.animationDuration = 0.5 + "s";
         ref.addEventListener("animationend", (e) => {
           if (onAnimationEnds) {

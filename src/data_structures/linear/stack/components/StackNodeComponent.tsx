@@ -1,10 +1,11 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import StackNode from '../classes/StackNode'
 import { Primitive } from '../../../../types'
+import Node from '../../_classes/Node';
 
 type props = {
 
-  node: StackNode<Primitive>,
+  node: Node<Primitive>,
   id: number,
   height: number,
   onAnimationEnds?: (e: AnimationEvent) => void;

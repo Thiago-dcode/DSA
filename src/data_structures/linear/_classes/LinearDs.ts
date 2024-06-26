@@ -1,9 +1,10 @@
 import { Primitive, speed } from "@/types";
 import LinearNode from "./Node";
 import Position from "@/lib/classes/Position";
+import LinkedList from "../linkedList/classes/LinkedList";
 
 export default abstract class LinearDs<T extends Primitive> {
-  protected _array: LinearNode<T>[];
+  protected linkedList: LinkedList<T>;
   private _width: number;
   private _maxSize;
   private _nodeHeight: number;
@@ -12,24 +13,13 @@ export default abstract class LinearDs<T extends Primitive> {
   private _beginner: number;
 
   constructor(data: T[] = []) {
-    this._array = [];
+    this.linkedList = new LinkedList<T>(data);
     this._width = 350;
     this._maxSize = 10;
     this._nodeHeight = 50;
     this._nodeSpacing = 5;
     this._speed = 2;
     this._beginner = this.maxSize * this.nodeHeight;
-    data.forEach((ele, i) => {
-      this._array.push(
-        new LinearNode<T>(
-          ele,
-          new Position(
-            0,
-            (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
-          )
-        )
-      );
-    });
   }
   get isEmpty() {
     return this.size == 0;
@@ -44,7 +34,7 @@ export default abstract class LinearDs<T extends Primitive> {
     return this._nodeSpacing;
   }
   get size() {
-    return this._array.length;
+    return this.linkedList.size;
   }
   get width() {
     return this._width;
@@ -81,9 +71,12 @@ export default abstract class LinearDs<T extends Primitive> {
     this._beginner = beginner;
   }
   flush() {
-    this._array = [];
+    this.linkedList.clean();
   }
-  get array() {
-    return this._array;
+  get toArray() {
+    return this.linkedList.toArray();
+  }
+  get toNodeArray() {
+    return this.linkedList.toNodeArray();
   }
 }

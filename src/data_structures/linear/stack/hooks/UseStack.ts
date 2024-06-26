@@ -16,6 +16,7 @@ export const UseStack = () => {
     if (stack == null || isAnimationRunning || isStackOverFlow) {
       return;
     }
+    console.log("STACK size:", stack.size)
     setIsStackOverFlow(false);
     if (stack.size >= stack.maxSize) {
       setIsStackOverFlow(true);
@@ -34,12 +35,12 @@ export const UseStack = () => {
       stack == null ||
       isAnimationRunning ||
       !stack.peekNode() ||
-      !stack.peekNode().ref
+      !stack.peekNode()?.ref
     ) {
       return;
     }
     // setStop(false);
-    const ref = stack.peekNode().ref?.current;
+    const ref = stack.peekNode()?.ref?.current;
     if (!ref) return;
     setAnimationRunning(true);
     await handlePopAnimation(ref, () => {
@@ -54,12 +55,12 @@ export const UseStack = () => {
       stack == null ||
       isAnimationRunning ||
       !stack.peekNode() ||
-      !stack.peekNode().ref
+      !stack.peekNode()?.ref
     ) {
       return;
     }
     // setStop(false);
-    const ref = stack.peekNode().ref?.current;
+    const ref = stack.peekNode()?.ref?.current;
     if (!ref) return;
     setAnimationRunning(true);
     await handlePeekAnimation(ref, () => {});

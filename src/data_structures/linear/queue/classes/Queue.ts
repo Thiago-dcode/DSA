@@ -12,13 +12,11 @@ export default class Queue<T extends Primitive> extends LinearDs<T> {
     if (this.size >= this.maxSize) {
       return;
     }
-    super.array.push(
-      new QueueNode(
-        data,
-        new Position(
-          0,
-          (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
-        )
+    this.linkedList.addLast(
+      data,
+      new Position(
+        0,
+        (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
       )
     );
   }

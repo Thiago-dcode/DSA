@@ -275,3 +275,21 @@ describe("Testing delete method in linkedList", () => {
     expect(linkedList.size).toBe(6);
   });
 });
+
+describe("Should convert to array", () => {
+  it("Should init with an array", () => {
+    const linkedList = new LinkedList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    for (let i = 0; i < 10; i++) {
+      expect(linkedList.get(i)).toBe(i);
+    }
+  });
+  it("Should return an array", () => {
+    const linkedList = new LinkedList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const arr = linkedList.toArray();
+    expect(Array.isArray(arr)).toBeTruthy();
+    expect(arr.length).toBe(linkedList.size);
+    for (let i = 0; i < linkedList.size; i++) {
+      expect(arr[i]).toBe(i);
+    }
+  });
+});

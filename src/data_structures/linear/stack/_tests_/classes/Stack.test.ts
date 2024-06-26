@@ -3,7 +3,7 @@ import Stack from "../../classes/Stack";
 describe("Stack class test", () => {
   it("Should initialize with a empty stack", () => {
     const stack = new Stack();
-    expect(stack.array.length).toBe(0);
+    expect(stack.size).toBe(0);
   });
   it("Should initialze with an array of StackNode", () => {
     const data: number[] = [];
@@ -12,7 +12,7 @@ describe("Stack class test", () => {
     }
     const stack = new Stack(data);
     for (let i = 0; i < data.length; i++) {
-      expect(i).toBe(stack.array[i].data);
+      expect(i).toBe(stack.toArray[i]);
     }
   });
   it("Should push", () => {
@@ -21,8 +21,8 @@ describe("Stack class test", () => {
     for (let i = 0; i < stack.maxSize; i++) {
       stack.push(i);
     }
-    for (let i = 0; i < stack.array.length; i++) {
-      expect(i).toBe(stack.array[i].data);
+    for (let i = 0; i < stack.toArray.length; i++) {
+      expect(i).toBe(stack.toArray[i]);
     }
   });
 
@@ -44,7 +44,7 @@ describe("Stack class test", () => {
   it("Should peek", () => {
     const stack = new Stack<number>();
     stack.maxSize = 200;
-    expect(stack.peek()).toBe(undefined);
+    expect(stack.peek()).toBe(null);
 
     for (let i = 0; i < stack.maxSize; i++) {
       stack.push(i);

@@ -14,7 +14,7 @@ describe("Testing Queue class", () => {
     }
     const queue = new Queue(data);
     for (let i = 0; i < data.length; i++) {
-      expect(i).toBe(queue.array[i].data);
+      expect(i).toBe(queue.toNodeArray[i].data);
     }
   });
   it("Should enqueue ", () => {
@@ -23,8 +23,8 @@ describe("Testing Queue class", () => {
     for (let i = 0; i < queue.maxSize; i++) {
       queue.enqueue(i);
     }
-    for (let i = 0; i < queue.array.length; i++) {
-      expect(i).toBe(queue.array[i].data);
+    for (let i = 0; i < queue.toArray.length; i++) {
+      expect(i).toBe(queue.toNodeArray[i].data);
     }
   });
 });

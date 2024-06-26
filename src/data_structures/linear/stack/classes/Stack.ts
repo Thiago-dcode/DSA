@@ -3,6 +3,7 @@ import { Primitive } from "../../../../types";
 
 import LinearDs from "../../_classes/LinearDs";
 import Position from "@/lib/classes/Position";
+import Node from "../../_classes/Node";
 export default class Stack<T extends Primitive> extends LinearDs<T> {
   constructor(data: T[] = []) {
     super(data);
@@ -11,24 +12,21 @@ export default class Stack<T extends Primitive> extends LinearDs<T> {
     if (this.size >= this.maxSize) {
       return;
     }
-    this.array.push(
-      new StackNode(
-        element,
-        new Position(
-          0,
-          (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
-        )
+    this.linkedList.addLast(
+      element,
+      new Position(
+        0,
+        (this.nodeHeight + this.nodeSpacing) * this.size + this.nodeSpacing
       )
     );
   }
-  pop(): T | undefined {
-    const node = this.array.pop();
-    return node?.data;
+  pop(): T | null {
+    return this.linkedList.deleteLast();
   }
-  peek(): T | undefined {
-    return this.array[this.size - 1]?.data;
+  peek(): T | null {
+    return this.linkedList.getLast();
   }
-  peekNode(): StackNode<Primitive> {
-    return this.array[this.size - 1];
+  peekNode(): Node<Primitive> | null {
+    return this.linkedList.findNode(this.size - 1);
   }
 }

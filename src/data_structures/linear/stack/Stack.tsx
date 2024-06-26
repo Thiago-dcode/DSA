@@ -53,7 +53,7 @@ const Stack = () => {
               }} type="submit" className="bg-green-400  hover:bg-green-600" variant={"default"}>push</Button>
             </div>
 
-            {stack.array.length > 0 && <Button onClick={async () => {
+            {stack.size > 0 && <Button onClick={async () => {
               if (isFillingStack || isStackOverFlow) return;
 
               await pop();
@@ -65,7 +65,7 @@ const Stack = () => {
 
 
             }
-            {stack.array.length > 0 && <Button style={{
+            {stack.size > 0 && <Button style={{
               opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
               cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
             }} onClick={async () => {
@@ -138,9 +138,9 @@ const Stack = () => {
             }} className="relative" id="stack">
 
               {
-                stack.array.length > 0 && stack.array.map((node, i) => {
+                stack.size > 0 && stack.toNodeArray.map((node, i) => {
                   return (
-                    <StackNodeComponent  onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
+                    <StackNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
                   )
                 })
               }
