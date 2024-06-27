@@ -1,21 +1,5 @@
-.stack-container {
-  border: 5px solid white;
-}
-#stack {
-  position: relative;
-}
 
-.stack-node {
-  border: 5px solid white;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
-  animation-timing-function: ease-out;
-  animation-duration: 1s;
-  animation-name: add-node;
 
-}
 
 @keyframes add-node {
   from {

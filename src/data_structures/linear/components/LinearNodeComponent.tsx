@@ -1,7 +1,7 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
-import StackNode from '../classes/StackNode'
-import { Primitive } from '../../../../types'
-import Node from '../../_classes/Node';
+import React, {  useEffect, useRef, 
+ } from 'react'
+import { Primitive } from '../../../types'
+import Node from '../_classes/Node';
 
 type props = {
 
@@ -12,7 +12,7 @@ type props = {
   handlePushAnimation: (ele: HTMLDivElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
 
 }
-const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation }: props) => {
+const LinearNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation }: props) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,11 +30,11 @@ const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, han
           height: `${height}px`,
 
         }
-      } className="stack-node text-center flex items-center justify-center overflow-auto rounded-lg">
+      } className="linear-node text-center flex items-center justify-center overflow-auto rounded-lg">
         {node.data}
       </div>}
 
     </>
   )
 }
-export default StackNodeComponent;
+export default LinearNodeComponent;

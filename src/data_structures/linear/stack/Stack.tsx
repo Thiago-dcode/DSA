@@ -2,7 +2,7 @@ import Main from "../../../components/container/Main";
 import './style.css';
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
-import StackNodeComponent from "./components/StackNodeComponent";
+import LinearNodeComponent from "../components/LinearNodeComponent";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import Info from "@/components/ui/info";
@@ -12,6 +12,10 @@ import { PopOverComponent } from "@/components/ui/PopOverComponent";
 import StackConfig from "./components/StackConfig";
 import UseAnimation from "./hooks/UseAnimation";
 import Properties from "@/components/app/Properties";
+import OperationsContainer from "@/components/container/OperationsContainer";
+import PushData from "../components/PushData";
+import ButtonAction from "../components/ButtonAction";
+import LinearDsContainer from "../components/LinearDsContainer";
 
 const Stack = () => {
   const { isFillingStack, stack, _render, render, push, pop, peek, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
@@ -33,64 +37,37 @@ const Stack = () => {
   return (
     <>
       {stack && <Main className="">
-
         {/* //ACTION BUTTONS: */}
-
-        {<div className="border-2 border-white w-full flex items-center justify-between gap-1 p-4">
+        {<OperationsContainer>
           <div className="flex  items-center gap-2 justify-center">
-            <div className="flex max-w-sm items-center space-x-2">
-              <Input defaultValue={nodeData} placeholder="let x = 50" className="text-black" onChange={(e) => {
-                setNodeData(e.target.value)
-              }} type="text" name="" id="" />
-              <Button style={{
-                opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
-                cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
-              }} onClick={async () => {
-
-                if (isFillingStack || isStackOverFlow) return;
-                await push(nodeData || 'let x = 50');
-
-              }} type="submit" className="bg-green-400  hover:bg-green-600" variant={"default"}>push</Button>
-            </div>
-
-            {stack.size > 0 && <Button onClick={async () => {
+            <PushData data={nodeData} setData={setNodeData} onClick={async () => {
               if (isFillingStack || isStackOverFlow) return;
-
+              await push(nodeData || 'let x = 50');
+            }} isLoading={isAnimationRunning || isFillingStack} />
+            {stack.size > 0 && <ButtonAction title="pop" className='bg-red-400 hover:bg-red-600' isLoading={isAnimationRunning || isFillingStack} onClick={async () => {
+              if (isFillingStack || isStackOverFlow) return;
               await pop();
-
-            }} style={{
-              opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
-              cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
-            }} type="submit" className="bg-red-400  hover:bg-red-600" >pop</Button>
-
-
+            }} />
             }
-            {stack.size > 0 && <Button style={{
-              opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
-              cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
-            }} onClick={async () => {
+            {stack.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFillingStack} onClick={async () => {
               if (isFillingStack || isStackOverFlow) return;
               await peek();
 
-            }} type="submit" className="bg-yellow-400  hover:bg-yellow-600" variant={"default"}>peek</Button>
-            } </div>
+            }} />
+            }
+          </div>
           <div className=" flex items-center gap-2">
-
-            <Button style={{
-              opacity: isAnimationRunning || isFillingStack ? '0.4' : '1',
-              cursor: isAnimationRunning || isFillingStack ? 'wait' : 'pointer'
-            }} onClick={async () => {
+            <ButtonAction title="run" className='bg-blue-400 hover:bg-blue-600' isLoading={isAnimationRunning || isFillingStack} onClick={async () => {
               if (isFillingStack || isStackOverFlow) return;
               await fillStack(0, stack.maxSize - stack.size);
 
               await emptyStack();
 
-
-            }} type="submit" className="bg-blue-400  hover:bg-blue-600" variant={"default"}>run</Button>
+            }} />
           </div>
-        </div>
+        </OperationsContainer>
         }
-        {/* //STACK STATIC PROPERTIES: */}
+        {/* // STATIC PROPERTIES: */}
         <Properties properties={properties} />
 
         {/* //EXTRA INFO AND CONFIG: */}
@@ -121,36 +98,20 @@ const Stack = () => {
 
         </div>
 
-        <div className=" w-full h-full flex items-center justify-center">
+        <LinearDsContainer linearDs={stack}>
+          {
+            stack.size > 0 && stack.toNodeArray.map((node, i) => {
+              return (
+                <LinearNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
+              )
+            })
+          }
+             </LinearDsContainer>
 
-          <div style={
-            {
-              paddingTop: stack.nodeSpacing + 'px'
-            }
-          } className="border-l-8 border-r-8 border-b-8 rounded-b-lg border-white px-2">
-
-
-            <div style={{
-              height: `${(stack.nodeHeight + stack.nodeSpacing) * stack.maxSize}px`,
-              width: `${stack.width}px`,
-
-
-            }} className="relative" id="stack">
-
-              {
-                stack.size > 0 && stack.toNodeArray.map((node, i) => {
-                  return (
-                    <StackNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
-                  )
-                })
-              }
-
-            </div>
-          </div>
           <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
             flush();
           }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${stack.maxSize} exceeded.`} />
-        </div>
+     
 
       </Main>}
     </>

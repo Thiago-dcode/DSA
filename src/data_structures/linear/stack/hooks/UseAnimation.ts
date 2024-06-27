@@ -18,6 +18,7 @@ const UseAnimation = (stack: Stack<Primitive> | null) => {
         }
         ref.style.setProperty("--start", `${stack?.beginner}px`);
         ref.style.setProperty("--end", `${stack?.peekNode()?.position.y}px`);
+        ref.style.animationName = "add-node";
         ref.addEventListener("animationend", (e) => {
           if (onAnimationEnds) {
             onAnimationEnds(e);
