@@ -16,9 +16,11 @@ import OperationsContainer from "@/components/container/OperationsContainer";
 import PushData from "../components/PushData";
 import ButtonAction from "../components/ButtonAction";
 import LinearDsContainer from "../components/LinearDsContainer";
+import UseLinear from "../hooks/UseLinear";
 
 const Stack = () => {
-  const { isFillingStack, stack, _render, render, push, pop, peek, flush, fillStack, emptyStack, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
+  const { stack, push, pop, peek, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
+  const { fill,flush, isFilling, _render, render, empty } = UseLinear(stack)
   const { handlePushAnimation } = UseAnimation(stack);
   const [nodeData, setNodeData] = useState('');
   const [properties, setProperties] = useState<{
@@ -33,7 +35,7 @@ const Stack = () => {
       'Stack size': stack.maxSize + '',
     })
 
-  }, [stack, isAnimationRunning, isStackOverFlow, isFillingStack, _render])
+  }, [stack, isAnimationRunning, isStackOverFlow, isFilling, _render])
   return (
     <>
       {stack && <Main className="">
@@ -41,27 +43,26 @@ const Stack = () => {
         {<OperationsContainer>
           <div className="flex  items-center gap-2 justify-center">
             <PushData data={nodeData} setData={setNodeData} onClick={async () => {
-              if (isFillingStack || isStackOverFlow) return;
+              if (isFilling || isStackOverFlow) return;
               await push(nodeData || 'let x = 50');
-            }} isLoading={isAnimationRunning || isFillingStack} />
-            {stack.size > 0 && <ButtonAction title="pop" className='bg-red-400 hover:bg-red-600' isLoading={isAnimationRunning || isFillingStack} onClick={async () => {
-              if (isFillingStack || isStackOverFlow) return;
-              await pop();
+            }} isLoading={isAnimationRunning || isFilling} />
+            {stack.size > 0 && <ButtonAction title="pop" className='bg-red-400 hover:bg-red-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
+              if (isFilling || isStackOverFlow) return;
+                            await pop();
             }} />
             }
-            {stack.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFillingStack} onClick={async () => {
-              if (isFillingStack || isStackOverFlow) return;
+            {stack.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
+              if (isFilling || isStackOverFlow) return;
               await peek();
 
             }} />
             }
           </div>
           <div className=" flex items-center gap-2">
-            <ButtonAction title="run" className='bg-blue-400 hover:bg-blue-600' isLoading={isAnimationRunning || isFillingStack} onClick={async () => {
-              if (isFillingStack || isStackOverFlow) return;
-              await fillStack(0, stack.maxSize - stack.size);
-
-              await emptyStack();
+            <ButtonAction title="run" className='bg-blue-400 hover:bg-blue-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
+              if (isFilling || isStackOverFlow) return;
+              await fill(0, stack.maxSize - stack.size, push);
+              await empty(pop);
 
             }} />
           </div>
@@ -90,7 +91,7 @@ const Stack = () => {
               <li> <b className="font-semibold text-yellow-400"> Peek: </b> This operation <b>returns the top element of the stack without removing it</b>. It allows you to inspect the element at the top of the stack without modifying the stack's state. This is useful when you need to see what the top element is without altering the stack. <br /><b>Time complexity: O(1).</b> </li>
 
             </ul></article>} className="self-start" />
-          {!isStackOverFlow && !isFillingStack && !isAnimationRunning && <div>
+          {!isStackOverFlow && !isFilling && !isAnimationRunning && <div>
             <PopOverComponent content={
               <StackConfig render={render} stack={stack} />
             } trigger={<Button><Wrench color="white" /></Button>} />
@@ -106,12 +107,12 @@ const Stack = () => {
               )
             })
           }
-             </LinearDsContainer>
+        </LinearDsContainer>
 
-          <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
-            flush();
-          }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${stack.maxSize} exceeded.`} />
-     
+        <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
+          flush();
+        }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${stack.maxSize} exceeded.`} />
+
 
       </Main>}
     </>
