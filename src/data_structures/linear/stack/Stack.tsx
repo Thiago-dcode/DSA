@@ -1,39 +1,29 @@
 import Main from "../../../components/container/Main";
-import './style.css';
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
 import LinearNodeComponent from "../components/LinearNodeComponent";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import Info from "@/components/ui/info";
 import { PopUp } from "@/components/ui/PopUp";
 import { Wrench } from "lucide-react";
 import { PopOverComponent } from "@/components/ui/PopOverComponent";
 import StackConfig from "./components/StackConfig";
-import UseAnimation from "./hooks/UseAnimation";
 import Properties from "@/components/app/Properties";
 import OperationsContainer from "@/components/container/OperationsContainer";
 import PushData from "../components/PushData";
 import ButtonAction from "../components/ButtonAction";
 import LinearDsContainer from "../components/LinearDsContainer";
 import UseLinear from "../hooks/UseLinear";
+import PropertiesLinearDs from "../components/PropertiesLinearDs";
 
 const Stack = () => {
-  const { stack, push, pop, peek, isStackOverFlow, isAnimationRunning, onAnimationEnds } = UseStack();
-  const { fill,flush, isFilling, _render, render, empty } = UseLinear(stack)
-  const { handlePushAnimation } = UseAnimation(stack);
+  const { stack, push, pop, peek, isStackOverFlow, isAnimationRunning, handlePushAnimation, onAnimationEnds, flushCallback } = UseStack();
+  const { fill, flush, isFilling, _render, render, empty } = UseLinear(stack)
   const [nodeData, setNodeData] = useState('');
-  const [properties, setProperties] = useState<{
-    [key: string]: string
-  }>({})
+ 
+
+
   useEffect(() => {
-    if (!stack) return;
-    setProperties({
-      'size': stack.size + '',
-      'isEmpty': stack.isEmpty.toString(),
-      'isFull': stack.isFull.toString(),
-      'Stack size': stack.maxSize + '',
-    })
 
   }, [stack, isAnimationRunning, isStackOverFlow, isFilling, _render])
   return (
@@ -43,16 +33,16 @@ const Stack = () => {
         {<OperationsContainer>
           <div className="flex  items-center gap-2 justify-center">
             <PushData data={nodeData} setData={setNodeData} onClick={async () => {
-              if (isFilling || isStackOverFlow) return;
+              if (isFilling || isStackOverFlow || isAnimationRunning) return;
               await push(nodeData || 'let x = 50');
             }} isLoading={isAnimationRunning || isFilling} />
             {stack.size > 0 && <ButtonAction title="pop" className='bg-red-400 hover:bg-red-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
-              if (isFilling || isStackOverFlow) return;
-                            await pop();
+              if (isFilling || isStackOverFlow || isAnimationRunning) return;
+              await pop();
             }} />
             }
             {stack.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
-              if (isFilling || isStackOverFlow) return;
+              if (isFilling || isStackOverFlow || isAnimationRunning) return;
               await peek();
 
             }} />
@@ -69,7 +59,7 @@ const Stack = () => {
         </OperationsContainer>
         }
         {/* // STATIC PROPERTIES: */}
-        <Properties properties={properties} />
+        <PropertiesLinearDs trigger={[isAnimationRunning,_render]} linearDs={stack} />
 
         {/* //EXTRA INFO AND CONFIG: */}
         <div className="flex  justify-between w-full px-4">
@@ -110,7 +100,7 @@ const Stack = () => {
         </LinearDsContainer>
 
         <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
-          flush();
+          flush(flushCallback);
         }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${stack.maxSize} exceeded.`} />
 
 

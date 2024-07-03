@@ -194,7 +194,7 @@ export default class LinkedList<T extends Primitive> {
     return array;
   }
   toNodeArray() {
-    const array = new Array(this.size);
+    const array: LinkedListNode<T>[] = new Array(this.size);
     let node = this._head;
     let i = 0;
     while (node) {

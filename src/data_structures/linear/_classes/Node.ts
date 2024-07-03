@@ -8,6 +8,7 @@ export default class Node<T extends Primitive> {
   private _position: Position;
   constructor(data: T, position: Position, ref: Ref = null) {
     this._ref = ref;
+
     this._position = position;
     this._data = data;
     // (StackNode.height + StackNode.spacing) * this._index + StackNode.spacing;
@@ -20,10 +21,10 @@ export default class Node<T extends Primitive> {
   get position() {
     return this._position;
   }
-  get ref(): MutableRefObject<null | HTMLElement> | null {
+  get ref(): Ref {
     return this._ref;
   }
-  set ref(ref: MutableRefObject<null | HTMLElement>) {
+  set ref(ref: Ref) {
     this._ref = ref;
   }
 

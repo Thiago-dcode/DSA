@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { title } from 'process';
 import React from 'react'
-import '../style.css'
 import { cn } from '@/lib/utils';
 
 function ButtonAction({ isLoading, onClick, color = "red", title, className='' }: {

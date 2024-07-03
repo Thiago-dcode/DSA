@@ -1,7 +1,9 @@
-import React, {  useEffect, useRef, 
- } from 'react'
+import React, {
+  useEffect, useRef,
+} from 'react'
 import { Primitive } from '../../../types'
 import Node from '../_classes/Node';
+
 
 type props = {
 
@@ -9,24 +11,25 @@ type props = {
   id: number,
   height: number,
   onAnimationEnds?: (e: AnimationEvent) => void;
-  handlePushAnimation: (ele: HTMLDivElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
+  handlePushAnimation: (ele: HTMLElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
+  dsType?: 'queue' | 'stack'
 
 }
-const LinearNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation }: props) => {
+const LinearNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation, dsType = 'stack' }: props) => {
 
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef(null);
 
   useEffect(() => {
-    if (ref == null) return
-    node.ref = ref;
-    handlePushAnimation(ref.current, onAnimationEnds)
+    if (ref.current == null) return
+    node.ref = ref.current;
+    handlePushAnimation(node.ref, onAnimationEnds)
   }, [ref])
   return (
     <>
-      {node && <div ref={ref} id={`stackNode-${id}`} style={
+      {node && <div ref={ref} id={`${dsType}-node-${id}`} style={
         {
-          animation: '',
-          bottom: `${node.position.y}px`,
+          top: dsType == 'queue' ? `${node.position.y}px` : '',
+          bottom: dsType == 'stack' ? `${node.position.y}px` : '',
           height: `${height}px`,
 
         }

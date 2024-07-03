@@ -4,7 +4,6 @@ import { Primitive } from "@/types";
 import { delay, getSpeed } from "@/lib/utils";
 
 function UseLinear(linearDs: LinearDs<Primitive> | null) {
-  const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isFilling, setIsFilling] = useState(false);
   const [_render, setRender] = useState(false);
   const flush = (callBack = () => {}) => {
@@ -12,7 +11,7 @@ function UseLinear(linearDs: LinearDs<Primitive> | null) {
       return;
     }
     setIsFilling(false);
-    setIsStackOverFlow(false);
+    callBack()
     linearDs.flush();
   };
   const fill = async (
@@ -21,11 +20,10 @@ function UseLinear(linearDs: LinearDs<Primitive> | null) {
     callBackFiller: (data: Primitive) => Promise<boolean>
   ) => {
     if (!linearDs) return;
-    console.log(linearDs.toNodeArray);
     setIsFilling(true);
     const _delay = getSpeed(linearDs.speed) * 1000;
 
-    if (spaceRemaining <= i || isStackOverFlow) {
+    if (spaceRemaining <= i) {
       setIsFilling(false);
 
       return;

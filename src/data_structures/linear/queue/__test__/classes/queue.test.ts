@@ -45,6 +45,22 @@ describe("Testing Queue class", () => {
 
     expect(queue.size).toBe(98);
   });
+  it("Should dequeue all ", () => {
+    const queue = new Queue<number>();
+    queue.maxSize = 100;
+
+    for (let i = 0; i < queue.maxSize; i++) {
+      queue.enqueue(i);
+    }
+    for (let i = 0; i < queue.maxSize; i++) {
+      expect(queue.dequeue()).toBe(i);
+    }
+    expect(queue.size).toBe(0);
+    expect(queue.peek()).toBeNull();
+    expect(queue.toNodeArray.length).toBe(0);
+    expect(queue.toNodeArray[0]).toBeFalsy();
+    expect(queue.dequeue()).toBe(null);
+  });
   it("Should peek ", () => {
     const queue = new Queue<number>();
     queue.maxSize = 100;

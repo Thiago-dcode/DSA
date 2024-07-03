@@ -1,11 +1,10 @@
 import { Primitive } from "@/types";
 import LinearDs from "../../_classes/LinearDs";
-import QueueNode from "./QueueNode";
 import Position from "@/lib/classes/Position";
 
 export default class Queue<T extends Primitive> extends LinearDs<T> {
   constructor(data: T[] = []) {
-    super(data);
+    super(data, "queue");
   }
   enqueue(data: T) {
     if (this.size >= this.maxSize) {
@@ -20,15 +19,22 @@ export default class Queue<T extends Primitive> extends LinearDs<T> {
     );
   }
   dequeue() {
-    if (this.size <= 0) {
-      return;
-    }
-    this.linkedList.deleteFirst();
+    if (this.size <= 0) return null;
+    
+    return this.linkedList.deleteFirst();
   }
   peek() {
     return this.linkedList.getFirst();
   }
   peekNode() {
+   try{
     return this.linkedList.findNode(0);
+   }catch(e){
+
+    return null;
+   }
+  }
+  currentNode() {
+    return this.linkedList.findNode(this.size - 1);
   }
 }

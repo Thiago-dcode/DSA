@@ -3,7 +3,8 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Stack from './data_structures/linear/stack/Stack'
 import Home from './home/Home'
 import DataStructures from './data_structures/DataStructures'
-import {globalConfig} from './config'
+import { globalConfig } from './config'
+import Queue from './data_structures/linear/queue/Queue'
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
 
               return (
 
-                <li>
+                <li key={key + value}>
                   <Link to={`${key}`}>{key}</Link>
 
                 </li>
@@ -39,6 +40,7 @@ function App() {
         <Route path="/data-structures">
           <Route index element={<DataStructures />} />
           <Route path='stack' element={<Stack />} />
+          <Route path='queue' element={<Queue />} />
         </Route>
 
         <Route path="*" element={<h1>NOT FOUND</h1>} />

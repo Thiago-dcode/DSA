@@ -1,52 +1,91 @@
-
-  .linear-node {
-    border: 5px solid white;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    animation-timing-function: ease-out;
-    animation-duration: 1s;
+.linear-node {
+  border: 5px solid white;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  animation-timing-function: ease-out;
+  animation-duration: 0.5s;
+}
+.linear-node,.move-node {
+  animation-name: move-node-queue;
+  animation-duration: 0.2s;
+  background-color: 'red';
+}
+@keyframes add-node-queue {
+  from {
+    top: var(--start);
+    opacity: 0.5;
+    background: rgb(74, 222, 128);
   }
 
-@keyframes add-node {
-    from {
-      bottom: var(--start);
-      opacity: 0.5;
-      background: rgb(74, 222, 128);
-    }
-  
-    to {
-      bottom: var(--end);
-      opacity: 1;
-      background: none;
-    }
+  to {
+    top: var(--end);
+    opacity: 1;
+    background: none;
   }
-  
-  @keyframes remove-node {
-    from {
-      bottom: var(--start);
-      opacity: 1;
-      background: none;
-    }
-  
-    to {
-      bottom: var(--end);
-      opacity: 0.1;
-      background: rgb(220, 38, 38);
-    }
+}
+
+@keyframes remove-node-queue {
+  from {
+    opacity: 1;
+    background: none;
   }
-  @keyframes peek-node {
-    0% {
-      background: rgba(250, 204, 21,0.5);
-    }
-  
-    80% {
-      background: rgba(250, 204, 1);
-    }
-  
-    100% {
-      background: rgba(250, 204, 21,0)
-    }
+
+  to {
+    opacity: 0.1;
+    background: rgb(220, 38, 38);
   }
-  
+}
+@keyframes move-node-queue {
+  from {
+    top: var(--start);
+  }
+
+  to {
+    top: var(--end);
+    background: rgb(220, 38, 38);
+  }
+}
+
+@keyframes add-node-stack {
+  from {
+    bottom: var(--start);
+    opacity: 0.5;
+    background: rgb(74, 222, 128);
+  }
+
+  to {
+    bottom: var(--end);
+    opacity: 1;
+    background: none;
+  }
+}
+
+@keyframes remove-node-stack {
+  from {
+    bottom: var(--start);
+    opacity: 1;
+    background: none;
+  }
+
+  to {
+    bottom: var(--end);
+    opacity: 0.1;
+    background: rgb(220, 38, 38);
+  }
+}
+
+@keyframes peek-node {
+  0% {
+    background: rgba(250, 204, 21, 0.5);
+  }
+
+  80% {
+    background: rgba(250, 204, 1);
+  }
+
+  100% {
+    background: rgba(250, 204, 21, 0);
+  }
+}

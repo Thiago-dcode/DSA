@@ -3,6 +3,7 @@ import LinearNode from "./Node";
 import Position from "@/lib/classes/Position";
 import LinkedList from "../linkedList/classes/LinkedList";
 import NotAllowedSizeError from "@/lib/errors/MaxSizeExceededError";
+import LinkedListNode from "../linkedList/classes/LinkedListNode";
 
 export default abstract class LinearDs<T extends Primitive> {
   protected linkedList: LinkedList<T>;
@@ -12,8 +13,10 @@ export default abstract class LinearDs<T extends Primitive> {
   private _nodeSpacing: number;
   private _speed: speed;
   private _beginner: number;
+  private _name: string;
 
-  constructor(data: T[] = []) {
+  constructor(data: T[] = [], _name: string) {
+    this._name = _name;
     this.linkedList = new LinkedList<T>(data);
     this._width = 350;
     this._maxSize = 10;
@@ -21,6 +24,9 @@ export default abstract class LinearDs<T extends Primitive> {
     this._nodeSpacing = 5;
     this._speed = 2;
     this._beginner = this.maxSize * this.nodeHeight;
+  }
+  get name() {
+    return this._name;
   }
   get isEmpty() {
     return this.size == 0;
@@ -53,7 +59,7 @@ export default abstract class LinearDs<T extends Primitive> {
     if (max > 100 || max < 1) {
       throw new NotAllowedSizeError("a size must be between 1 and 100");
     }
-    
+
     this.beginner = max * this.nodeHeight;
     this._maxSize = max;
   }
@@ -75,10 +81,14 @@ export default abstract class LinearDs<T extends Primitive> {
   flush() {
     this.linkedList.clean();
   }
+
   get toArray() {
     return this.linkedList.toArray();
   }
   get toNodeArray() {
     return this.linkedList.toNodeArray();
   }
+  abstract peek(): T | null;
+  abstract peekNode(): LinkedListNode<T> | null;
+  abstract currentNode(): LinkedListNode<T> | null;
 }
