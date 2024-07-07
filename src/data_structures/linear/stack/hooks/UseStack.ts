@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Stack from "../classes/Stack";
 import { Primitive } from "../../../../types";
-import UseAnimation from "./UseAnimation";
+import UseStackAnimation from "./UseStackAnimation";
 
 export const UseStack = () => {
   const [stack, setStack] = useState<Stack<Primitive> | null>(null);
   const { handlePopAnimation, handlePeekAnimation, handlePushAnimation } =
-    UseAnimation(stack);
+    UseStackAnimation(stack);
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const [isAnimationRunning, setAnimationRunning] = useState(false);
   const push = (data: Primitive): Promise<boolean> => {

@@ -1,13 +1,14 @@
 import { Input } from '@/components/ui/input'
 import React from 'react'
-import Stack from '../classes/Stack'
-import { Primitive } from '../../../../types'
+import Stack from '../stack/classes/Stack'
+import { Primitive } from '../../../types'
+import LinearDs from '../_classes/LinearDs';
 
-export default function StackConfig({
+export default function LinearDsConfig({
     stack,
     render
 }: {
-    stack: Stack<Primitive>;
+    stack: LinearDs<Primitive>;
     render: (c?: boolean) => void
 }) {
     return (

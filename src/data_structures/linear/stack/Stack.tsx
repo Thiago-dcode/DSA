@@ -1,31 +1,24 @@
 import Main from "../../../components/container/Main";
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
-import LinearNodeComponent from "../components/LinearNodeComponent";
 import { useEffect, useState } from "react";
 import Info from "@/components/ui/info";
 import { PopUp } from "@/components/ui/PopUp";
 import { Wrench } from "lucide-react";
 import { PopOverComponent } from "@/components/ui/PopOverComponent";
-import StackConfig from "./components/StackConfig";
-import Properties from "@/components/app/Properties";
+import LinearDsConfig from "../components/LinearDsConfig";
 import OperationsContainer from "@/components/container/OperationsContainer";
 import PushData from "../components/PushData";
 import ButtonAction from "../components/ButtonAction";
 import LinearDsContainer from "../components/LinearDsContainer";
 import UseLinear from "../hooks/UseLinear";
 import PropertiesLinearDs from "../components/PropertiesLinearDs";
+import StackNodeComponent from "./components/StackNodeComponent";
 
 const Stack = () => {
   const { stack, push, pop, peek, isStackOverFlow, isAnimationRunning, handlePushAnimation, onAnimationEnds, flushCallback } = UseStack();
   const { fill, flush, isFilling, _render, render, empty } = UseLinear(stack)
   const [nodeData, setNodeData] = useState('');
- 
-
-
-  useEffect(() => {
-
-  }, [stack, isAnimationRunning, isStackOverFlow, isFilling, _render])
   return (
     <>
       {stack && <Main className="">
@@ -83,7 +76,7 @@ const Stack = () => {
             </ul></article>} className="self-start" />
           {!isStackOverFlow && !isFilling && !isAnimationRunning && <div>
             <PopOverComponent content={
-              <StackConfig render={render} stack={stack} />
+              <LinearDsConfig render={render} stack={stack} />
             } trigger={<Button><Wrench color="white" /></Button>} />
           </div>}
 
@@ -93,7 +86,7 @@ const Stack = () => {
           {
             stack.size > 0 && stack.toNodeArray.map((node, i) => {
               return (
-                <LinearNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
+                <StackNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
               )
             })
           }

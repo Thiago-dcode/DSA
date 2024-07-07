@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import UseQueue from './hooks/UseQueue'
 import Properties from '@/components/app/Properties';
 import Main from '@/components/container/Main';
@@ -8,32 +8,21 @@ import { PopUp } from '@/components/ui/PopUp';
 import { Button } from '@/components/ui/button';
 import { Wrench } from 'lucide-react';
 import Info from '@/components/ui/info';
-import { render } from 'react-dom';
 import ButtonAction from '../components/ButtonAction';
 import LinearDsContainer from '../components/LinearDsContainer';
-import LinearNodeComponent from '../components/LinearNodeComponent';
 import PushData from '../components/PushData';
 import UseLinear from '../hooks/UseLinear';
-import UseAnimation from '../stack/hooks/UseAnimation';
+import QueueNodeComponent from './components/QueueNodeComponent';
+import PropertiesLinearDs from '../components/PropertiesLinearDs';
+import { action } from './type';
+import LinearDsConfig from '../components/LinearDsConfig';
 export default function Queue() {
 
-  const { enqueue, queue, dequeue, isStackOverFlow, flushCallback, onAnimationEnds, isAnimationRunning } = UseQueue();
+  const { enqueue, queue, dequeue, isStackOverFlow, setIsStackOverFlow } = UseQueue();
+  const [action, setAction] = useState<action>('enqueue');
+  const [isAnimationRunning, setAnimationRunning] = useState(false);
   const { isFilling, fill, _render, render, flush } = UseLinear(queue)
-  const { handlePushAnimation } = UseAnimation(queue);
   const [nodeData, setNodeData] = useState('let x = 25')
-  const [properties, setProperties] = useState<{
-    [key: string]: string
-  }>({})
-  useEffect(() => {
-    if (!queue) return;
-    setProperties({
-      'size': queue.size + '',
-      'isEmpty': queue.isEmpty.toString(),
-      'isFull': queue.isFull.toString(),
-      'queue size': queue.maxSize + '',
-    })
-
-  }, [_render, isStackOverFlow, queue])
   return (
     <>
       {queue && <Main className="">
@@ -42,21 +31,29 @@ export default function Queue() {
           <div className="flex  items-center gap-2 justify-center">
             <PushData data={nodeData} setData={setNodeData} onClick={async () => {
               if (isFilling || isAnimationRunning) return;
+              if(action != 'enqueue')  setAction('enqueue')
+              setAnimationRunning(true)
               enqueue(nodeData)
 
             }} isLoading={isFilling || isAnimationRunning} />
             {queue.size > 0 && <ButtonAction title="pop" className='bg-red-400 hover:bg-red-600' isLoading={isFilling || isAnimationRunning} onClick={async () => {
               // console.log('DEQUEUE', isAnimationRunning)
               if (isFilling || isStackOverFlow || isAnimationRunning) return;
-              await dequeue();
+              if(action != 'dequeue')  setAction('dequeue')
+              setAnimationRunning(true);
+              await dequeue(()=>{
+              setAnimationRunning(false)
+      
+            })
+        
             }} />
             }
-            {/* {queue.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
+            {queue.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
               if (isFilling || isStackOverFlow || isAnimationRunning) return;
               await peek();
 
             }} />
-            } */}
+            }
           </div>
           {/* <div className=" flex items-center gap-2">
             <ButtonAction title="run" className='bg-blue-400 hover:bg-blue-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
@@ -69,7 +66,7 @@ export default function Queue() {
         </OperationsContainer>
         }
         {/* // STATIC PROPERTIES: */}
-        <Properties properties={properties} />
+        <PropertiesLinearDs trigger={[isAnimationRunning, _render]} linearDs={queue} />
 
         {/* //EXTRA INFO AND CONFIG: */}
         <div className="flex  justify-between w-full px-4">
@@ -91,27 +88,32 @@ export default function Queue() {
               <li> <b className="font-semibold text-yellow-400"> Peek: </b> This operation <b>returns the top element of the stack without removing it</b>. It allows you to inspect the element at the top of the stack without modifying the stack's state. This is useful when you need to see what the top element is without altering the stack. <br /><b>Time complexity: O(1).</b> </li>
 
             </ul></article>} className="self-start" />
-          {/* {!isStackOverFlow && !isFilling && !isAnimationRunning && <div>
+          {!isStackOverFlow && !isFilling && !isAnimationRunning && <div>
             <PopOverComponent content={
-              <StackConfig render={render} stack={stack} />
+              <LinearDsConfig render={render} stack={queue} />
             } trigger={<Button><Wrench color="white" /></Button>} />
-          </div>} */}
+          </div>}
 
         </div>
 
         <LinearDsContainer dsType='queue' linearDs={queue}>
           {
             queue.toNodeArray.map((node, i) => {
-
+            
               return (
-                <LinearNodeComponent dsType='queue' onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={queue.nodeHeight} key={'queueNode-' + i} node={node} id={i} />
+      
+                <QueueNodeComponent  trigger={[]} setIsAnimationRunning={setAnimationRunning} queue={queue} action={action} height={queue.nodeHeight} key={`${queue.name}-node-${node.id}`} node={node} id={i} />
+               
               )
             })
           }
         </LinearDsContainer>
 
         <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
-          flush(flushCallback);
+          flush(() => {
+            setAnimationRunning(false)
+            setIsStackOverFlow(false)
+          });
         }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${queue.maxSize} exceeded.`} />
 
 

@@ -39,6 +39,7 @@ function UseLinear(linearDs: LinearDs<Primitive> | null) {
     }
     setRender((prev) => !prev);
   };
+  
   const empty = async (callBackEmptier: () => Promise<boolean>) => {
     setIsFilling(true);
     if (!linearDs) {

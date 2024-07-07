@@ -7,11 +7,7 @@
   animation-timing-function: ease-out;
   animation-duration: 0.5s;
 }
-.linear-node,.move-node {
-  animation-name: move-node-queue;
-  animation-duration: 0.2s;
-  background-color: 'red';
-}
+
 @keyframes add-node-queue {
   from {
     top: var(--start);
@@ -28,11 +24,13 @@
 
 @keyframes remove-node-queue {
   from {
+    top: var(--start);
     opacity: 1;
     background: none;
   }
 
   to {
+    top: var(--end);
     opacity: 0.1;
     background: rgb(220, 38, 38);
   }
@@ -44,7 +42,7 @@
 
   to {
     top: var(--end);
-    background: rgb(220, 38, 38);
+   
   }
 }
 

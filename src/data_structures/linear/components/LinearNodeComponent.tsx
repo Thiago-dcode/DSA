@@ -1,5 +1,6 @@
 import React, {
-  useEffect, useRef,
+  forwardRef,
+  useEffect, useMemo, useRef,
 } from 'react'
 import { Primitive } from '../../../types'
 import Node from '../_classes/Node';
@@ -10,23 +11,15 @@ type props = {
   node: Node<Primitive>,
   id: number,
   height: number,
-  onAnimationEnds?: (e: AnimationEvent) => void;
-  handlePushAnimation: (ele: HTMLElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
-  dsType?: 'queue' | 'stack'
-
+  dsType?: 'queue' | 'stack',
+ 
 }
-const LinearNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation, dsType = 'stack' }: props) => {
+const LinearNodeComponent =forwardRef<HTMLDivElement,props>( ({ node, height, id,  dsType = 'stack' }: props,ref) => {
 
-  const ref = useRef(null);
 
-  useEffect(() => {
-    if (ref.current == null) return
-    node.ref = ref.current;
-    handlePushAnimation(node.ref, onAnimationEnds)
-  }, [ref])
   return (
     <>
-      {node && <div ref={ref} id={`${dsType}-node-${id}`} style={
+      {node && <div ref={ref} id={`${dsType}-node-${node.id}`}style={
         {
           top: dsType == 'queue' ? `${node.position.y}px` : '',
           bottom: dsType == 'stack' ? `${node.position.y}px` : '',
@@ -39,5 +32,5 @@ const LinearNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, ha
 
     </>
   )
-}
+})
 export default LinearNodeComponent;

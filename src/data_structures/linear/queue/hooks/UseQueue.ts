@@ -1,17 +1,15 @@
 import { Primitive } from "@/types";
 import React, { useEffect, useState } from "react";
 import Queue from "../classes/Queue";
-import UseAnimation from "../../stack/hooks/UseAnimation";
 import "../../style.css";
 import LinkedListNode from "../../linkedList/classes/LinkedListNode";
-import { delay } from "@/lib/utils";
-import { resolve } from "path";
+import { delay, getSpeed } from "@/lib/utils";
+import UseQueueAnimation from "./UseQueueAnimation";
 
 function UseQueue() {
   const [queue, setQueue] = useState<Queue<Primitive> | null>(null);
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
-  const [isAnimationRunning, setAnimationRunning] = useState(false);
-  const { handlePopAnimation } = UseAnimation(queue);
+  const { dequeueAnimation, moveAnimation } = UseQueueAnimation(queue);
   const enqueue = (data: Primitive) => {
     if (!queue) return;
     if (queue.size >= queue?.maxSize) {
@@ -19,81 +17,26 @@ function UseQueue() {
       return;
     }
     queue?.enqueue(data);
-    setAnimationRunning(true);
-    setQueue((prev) => {
-      return prev;
-    });
   };
-  const dequeue = async () => {
-    const moveNode = async (node: LinkedListNode<Primitive>, i: number) => {
-      await new Promise(async (resolve, reject) => {
-        if (!queue) {
-          reject(false);
-        } else {
-          const ref = node.ref;
-          if (ref) {
-            const event = () => {
-              console.log("on animation ends");
-              ref.style.animation = "none";
-              ref.offsetHeight;
-
-              ref.removeEventListener("animationend", event);
-            };
-            console.log("REF:", node.data, ref);
-            ref.style.setProperty("--start", `${node.position.y}px`);
-            ref.style.setProperty(
-              "--end",
-              `${
-                (queue.nodeHeight + queue.nodeSpacing) * i + queue.nodeSpacing
-              }px`
-            );
-            ref.style.animationName = `move-node-${queue.name}`;
-            ref.addEventListener("animationend", event);
-            resolve(true);
-          } else {
-            console.log("NO REF:", node.data, ref);
-            reject(false);
-          }
-        }
-      });
-    };
-    return new Promise(async (resolve, reject) => {
-      if (!queue || !queue.peekNode() || queue.size <= 0) {
-        reject(false);
-      } else {
-        setAnimationRunning(true);
-        const ref = queue.peekNode()?.ref;
-
-        // await handlePopAnimation(ref ? ref : null, () => {});
-
-        const nodes = queue.toNodeArray;
-        for (let i = 0; i < nodes.length; i++) {
-          const node = nodes[i];
-          console.log(nodes.length);
-          if (i === 0) {
-            if (ref && ref.id === `${queue.name}-node-${i}`) {
-              ref.style.background = "red";
-            }
-            await delay(100);
-            queue.dequeue();
-          
-
-            continue;
-          }
-          // await moveNode(node, i);
-
-          await delay(50);
-          node.position.y =
-            (queue.nodeHeight + queue.nodeSpacing) * (i - 1) +
-            queue.nodeSpacing;
-        }
-
-        await delay(50);
-
-        setAnimationRunning(false);
-        resolve(true);
+  const dequeue = async (callback = () => {}) => {
+    if (!queue) return;
+    const nodes = queue.toNodeArray;
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (i === 0) {
+      await dequeueAnimation(node.ref, () => {
+          queue.dequeue();
+        });
+        continue;
       }
-    });
+      console.log('HELLO?',i)
+     moveAnimation(node.ref, i, () => {
+        node.position.y = (queue.nodeHeight + queue.nodeSpacing) * (i - 1) + queue.nodeSpacing
+      });
+   
+    }
+  
+    callback();
   };
 
   // const enqueue = async (data: Primitive) => {
@@ -105,7 +48,7 @@ function UseQueue() {
   //     if (isAnimationRunning || !queue) {
   //       reject(false);
   //     } else {
-  //       setAnimationRunning(true);
+  //
   //       queue?.enqueue(data);
 
   //       resolve(true);
@@ -126,7 +69,7 @@ function UseQueue() {
   //       console.log("DEQUEUE", queue?.toNodeArray);
   //       if (!ref) reject(false);
   //       else {
-  //         setAnimationRunning(true);
+  //
   //         handlePopAnimation(ref, () => {
   //           ref.style.display = "none";
   //           queue.dequeue();
@@ -137,28 +80,17 @@ function UseQueue() {
   //     }
   //   });
 
-  const onAnimationEnds = (
-    e: AnimationEvent | React.AnimationEvent<HTMLDivElement>
-  ) => {
-    setAnimationRunning(false);
-  };
-  const flushCallback = () => {
-    // setAnimationRunning(false);
-    setIsStackOverFlow(false);
-  };
   useEffect(() => {
     setQueue(new Queue());
   }, []);
 
   return {
     enqueue,
-    isAnimationRunning,
     queue,
     dequeue,
-    onAnimationEnds,
-    //   // handlePushAnimation,
+
     isStackOverFlow,
-    flushCallback,
+    setIsStackOverFlow,
   };
 }
 export default UseQueue;
