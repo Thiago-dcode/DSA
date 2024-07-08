@@ -4,7 +4,7 @@ import {
     useEffect, useMemo, useRef,
 } from 'react'
 import Node from '../../_classes/Node';
-import LinearNodeComponent from '../../components/LinearNodeComponent';
+import LinearNodeComponent from '../../_components/LinearNodeComponent';
 import UseQueueAnimation from '../hooks/UseQueueAnimation';
 import Queue from '../classes/Queue';
 import { action } from '../type';

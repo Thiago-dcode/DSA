@@ -4,7 +4,7 @@ import {
     useEffect, useRef,
 } from 'react'
 import Node from '../../_classes/Node';
-import LinearNodeComponent from '../../components/LinearNodeComponent';
+import LinearNodeComponent from '../../_components/LinearNodeComponent';
 type props = {
 
     node: Node<Primitive>,

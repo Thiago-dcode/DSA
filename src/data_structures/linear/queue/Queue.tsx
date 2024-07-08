@@ -8,13 +8,13 @@ import { PopUp } from '@/components/ui/PopUp';
 import { Button } from '@/components/ui/button';
 import { Wrench } from 'lucide-react';
 import Info from '@/components/ui/info';
-import ButtonAction from '../components/ButtonAction';
-import LinearDsContainer from '../components/LinearDsContainer';
-import PushData from '../components/PushData';
+import ButtonAction from '../_components/ButtonAction';
+import LinearDsContainer from '../_components/LinearDsContainer';
+import PushData from '../_components/PushData';
 import UseLinear from '../hooks/UseLinear';
 import QueueNodeComponent from './components/QueueNodeComponent';
-import PropertiesLinearDs from '../components/PropertiesLinearDs';
-import LinearDsConfig from '../components/LinearDsConfig';
+import PropertiesLinearDs from '../_components/PropertiesLinearDs';
+import LinearDsConfig from '../_components/LinearDsConfig';
 export default function Queue() {
 
   const { enqueue, queue, dequeue, isStackOverFlow, setIsStackOverFlow } = UseQueue();

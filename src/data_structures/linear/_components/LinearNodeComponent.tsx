@@ -5,7 +5,6 @@ import React, {
 import { Primitive } from '../../../types'
 import Node from '../_classes/Node';
 
-
 type props = {
 
   node: Node<Primitive>,

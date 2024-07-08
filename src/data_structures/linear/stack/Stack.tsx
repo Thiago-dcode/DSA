@@ -6,13 +6,13 @@ import Info from "@/components/ui/info";
 import { PopUp } from "@/components/ui/PopUp";
 import { Wrench } from "lucide-react";
 import { PopOverComponent } from "@/components/ui/PopOverComponent";
-import LinearDsConfig from "../components/LinearDsConfig";
+import LinearDsConfig from "../_components/LinearDsConfig";
 import OperationsContainer from "@/components/container/OperationsContainer";
-import PushData from "../components/PushData";
-import ButtonAction from "../components/ButtonAction";
-import LinearDsContainer from "../components/LinearDsContainer";
+import PushData from "../_components/PushData";
+import ButtonAction from "../_components/ButtonAction";
+import LinearDsContainer from "../_components/LinearDsContainer";
 import UseLinear from "../hooks/UseLinear";
-import PropertiesLinearDs from "../components/PropertiesLinearDs";
+import PropertiesLinearDs from "../_components/PropertiesLinearDs";
 import StackNodeComponent from "./components/StackNodeComponent";
 
 const Stack = () => {
