@@ -1,7 +1,7 @@
 import Main from "../../../components/container/Main";
 import { Button } from "@/components/ui/button";
 import { UseStack } from "./hooks/UseStack";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Info from "@/components/ui/info";
 import { PopUp } from "@/components/ui/PopUp";
 import { Wrench } from "lucide-react";

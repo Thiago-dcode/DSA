@@ -1,9 +1,7 @@
 import { Primitive } from "@/types";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Queue from "../classes/Queue";
 import "../../style.css";
-import LinkedListNode from "../../linkedList/classes/LinkedListNode";
-import { delay, getSpeed } from "@/lib/utils";
 import UseQueueAnimation from "./UseQueueAnimation";
 
 function UseQueue() {

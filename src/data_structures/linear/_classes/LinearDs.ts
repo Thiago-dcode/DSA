@@ -1,4 +1,4 @@
-import { Primitive, speed } from "@/types";
+import { Primitive } from "@/types";
 import LinkedList from "../linkedList/classes/LinkedList";
 import LinkedListNode from "../linkedList/classes/LinkedListNode";
 import List from "./List";

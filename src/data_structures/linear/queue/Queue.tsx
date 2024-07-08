@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import UseQueue from './hooks/UseQueue'
-import Properties from '@/components/app/Properties';
 import Main from '@/components/container/Main';
 import OperationsContainer from '@/components/container/OperationsContainer';
 import { PopOverComponent } from '@/components/ui/PopOverComponent';

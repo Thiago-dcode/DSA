@@ -1,14 +1,12 @@
 import { Primitive } from '@/types';
 import {
-    useCallback,
-    useEffect, useMemo, useRef,
+    useCallback
 } from 'react'
-import Node from '../../_classes/Node';
+
 import LinearNodeComponent from '../../_components/LinearNodeComponent';
 import UseQueueAnimation from '../hooks/UseQueueAnimation';
 import Queue from '../classes/Queue';
-import { action } from '../type';
-import { Action } from '@radix-ui/react-alert-dialog';
+
 import LinkedListNode from '../../linkedList/classes/LinkedListNode';
 type props = {
 
@@ -40,7 +38,7 @@ const QueueNodeComponent = ({ node, height, id, queue, setIsAnimationRunning }: 
 
 
     return (
-        <LinearNodeComponent node={node} height={height} id={id} dsType={'queue'} ref={handleRef} />
+        <LinearNodeComponent node={node} height={height} dsType={'queue'} ref={handleRef} />
 
     )
 }

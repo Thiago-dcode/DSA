@@ -1,6 +1,4 @@
 import { Input } from '@/components/ui/input'
-import React from 'react'
-import Stack from '../stack/classes/Stack'
 import { Primitive } from '../../../types'
 import LinearDs from '../_classes/LinearDs';
 

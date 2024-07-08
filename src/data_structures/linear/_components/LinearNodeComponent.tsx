@@ -1,6 +1,5 @@
-import React, {
+import {
   forwardRef,
-  useEffect, useMemo, useRef,
 } from 'react'
 import { Primitive } from '../../../types'
 import Node from '../_classes/Node';
@@ -8,17 +7,17 @@ import Node from '../_classes/Node';
 type props = {
 
   node: Node<Primitive>,
-  id: number,
+
   height: number,
   dsType?: 'queue' | 'stack',
- 
+
 }
-const LinearNodeComponent =forwardRef<HTMLDivElement,props>( ({ node, height, id,  dsType = 'stack' }: props,ref) => {
+const LinearNodeComponent = forwardRef<HTMLDivElement, props>(({ node, height, dsType = 'stack' }: props, ref) => {
 
 
   return (
     <>
-      {node && <div ref={ref} id={`${dsType}-node-${node.id}`}style={
+      {node && <div ref={ref} id={`${dsType}-node-${node.id}`} style={
         {
           top: dsType == 'queue' ? `${node.position.y}px` : '',
           bottom: dsType == 'stack' ? `${node.position.y}px` : '',

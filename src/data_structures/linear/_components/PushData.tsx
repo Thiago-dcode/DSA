@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import React from 'react'
 import ButtonAction from './ButtonAction';
 
 function PushData({ data, setData, isLoading, onClick, title = "push" }: {

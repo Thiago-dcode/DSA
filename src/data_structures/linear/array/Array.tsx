@@ -1,32 +1,32 @@
-import React from 'react'
+
 
 export default function Array() {
 
-    const read = () => {
+    // const read = () => {
 
 
-    }
+    // }
 
-    const search = () => {
-
-
-    }
-    const remove = () => {
+    // const search = () => {
 
 
-    }
-    const push = () => {
+    // }
+    // const remove = () => {
 
 
-    }
-    const pop = () => {
+    // }
+    // const push = () => {
 
 
-    }
-    const shift = () => {
+    // }
+    // const pop = () => {
 
 
-    }
+    // }
+    // const shift = () => {
+
+
+    // }
 
 
     return (
