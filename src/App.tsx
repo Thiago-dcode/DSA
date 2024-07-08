@@ -6,9 +6,7 @@ import DataStructures from './data_structures/DataStructures'
 import { globalConfig } from './config'
 import Queue from './data_structures/linear/queue/Queue'
 
-
 function App() {
-
 
   return (
     <>
