@@ -41,6 +41,7 @@ function App() {
           <Route index element={<DataStructures />} />
           <Route path='stack' element={<Stack />} />
           <Route path='queue' element={<Queue />} />
+          <Route path='array' element={<Array />} />
         </Route>
 
         <Route path="*" element={<h1>NOT FOUND</h1>} />

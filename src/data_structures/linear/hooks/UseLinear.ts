@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import LinearDs from "../_classes/LinearDs";
 import { Primitive } from "@/types";
 import { delay, getSpeed } from "@/lib/utils";
+import UseStackAnimation from "../stack/hooks/UseStackAnimation";
 
 function UseLinear(linearDs: LinearDs<Primitive> | null) {
   const [isFilling, setIsFilling] = useState(false);
   const [_render, setRender] = useState(false);
+  const {handlePeekAnimation} = UseStackAnimation(linearDs);
   const flush = (callBack = () => {}) => {
     if (linearDs == null) {
       return;
@@ -39,7 +41,27 @@ function UseLinear(linearDs: LinearDs<Primitive> | null) {
     }
     setRender((prev) => !prev);
   };
-  
+  const peek = async (callback = ()=>{}) => {
+    return new Promise(async (resolve, reject) => {
+      if (
+        linearDs == null ||
+        !linearDs.peekNode() ||
+        !linearDs.peekNode()?.ref
+      ) {
+        reject(false);
+      } else {
+       
+        const ref = linearDs.peekNode()?.ref;
+        if (!ref) reject(false);
+        else {
+          await handlePeekAnimation(ref, () => {
+            resolve(true);
+          });
+        }
+        callback()
+      }
+    });
+  };
   const empty = async (callBackEmptier: () => Promise<boolean>) => {
     setIsFilling(true);
     if (!linearDs) {
@@ -60,7 +82,8 @@ function UseLinear(linearDs: LinearDs<Primitive> | null) {
     isFilling,
     fill,
     flush,
-    empty
+    empty,
+    peek
   };
 }
 

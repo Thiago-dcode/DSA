@@ -16,8 +16,9 @@ import PropertiesLinearDs from "../components/PropertiesLinearDs";
 import StackNodeComponent from "./components/StackNodeComponent";
 
 const Stack = () => {
-  const { stack, push, pop, peek, isStackOverFlow, isAnimationRunning, handlePushAnimation, onAnimationEnds, flushCallback } = UseStack();
-  const { fill, flush, isFilling, _render, render, empty } = UseLinear(stack)
+  const { stack, push, pop, isStackOverFlow, handlePushAnimation, setIsStackOverFlow } = UseStack();
+  const [isAnimationRunning, setAnimationRunning] = useState(false);
+  const { fill, flush, isFilling, _render, render, empty, peek } = UseLinear(stack)
   const [nodeData, setNodeData] = useState('');
   return (
     <>
@@ -27,16 +28,23 @@ const Stack = () => {
           <div className="flex  items-center gap-2 justify-center">
             <PushData data={nodeData} setData={setNodeData} onClick={async () => {
               if (isFilling || isStackOverFlow || isAnimationRunning) return;
+              setAnimationRunning(true)
               await push(nodeData || 'let x = 50');
             }} isLoading={isAnimationRunning || isFilling} />
             {stack.size > 0 && <ButtonAction title="pop" className='bg-red-400 hover:bg-red-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
               if (isFilling || isStackOverFlow || isAnimationRunning) return;
-              await pop();
+              setAnimationRunning(true)
+              await pop(() => {
+                setAnimationRunning(false)
+              });
             }} />
             }
             {stack.size > 0 && <ButtonAction title="peek" className='bg-yellow-400 hover:bg-yellow-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
               if (isFilling || isStackOverFlow || isAnimationRunning) return;
-              await peek();
+              setAnimationRunning(true)
+              await peek(() => {
+                setAnimationRunning(false)
+              });
 
             }} />
             }
@@ -44,15 +52,26 @@ const Stack = () => {
           <div className=" flex items-center gap-2">
             <ButtonAction title="run" className='bg-blue-400 hover:bg-blue-600' isLoading={isAnimationRunning || isFilling} onClick={async () => {
               if (isFilling || isStackOverFlow) return;
-              await fill(0, stack.maxSize - stack.size, push);
-              await empty(pop);
+
+              await fill(0, stack.maxSize - stack.size, (data) => {
+
+                setAnimationRunning(true)
+                return push(data)
+
+
+              });
+              await empty(() => {
+                return pop(() => {
+                  setAnimationRunning(false)
+                })
+              });
 
             }} />
           </div>
         </OperationsContainer>
         }
         {/* // STATIC PROPERTIES: */}
-        <PropertiesLinearDs trigger={[isAnimationRunning,_render]} linearDs={stack} />
+        <PropertiesLinearDs trigger={[isAnimationRunning, _render]} linearDs={stack} />
 
         {/* //EXTRA INFO AND CONFIG: */}
         <div className="flex  justify-between w-full px-4">
@@ -86,14 +105,17 @@ const Stack = () => {
           {
             stack.size > 0 && stack.toNodeArray.map((node, i) => {
               return (
-                <StackNodeComponent onAnimationEnds={onAnimationEnds} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
+                <StackNodeComponent setAnimationIsRunning={setAnimationRunning} handlePushAnimation={handlePushAnimation} height={stack.nodeHeight} key={'stackNode-' + i} node={node} id={i} />
               )
             })
           }
         </LinearDsContainer>
 
         <PopUp title="StackOverFlowError" buttonText="dismiss" handleOnPopUpButton={() => {
-          flush(flushCallback);
+          flush(() => {
+            setAnimationRunning(false)
+            setIsStackOverFlow(false)
+          });
         }} open={isStackOverFlow} showTrigger={false} description={`A Stack overflow error has ocurred. Stack maximum size of ${stack.maxSize} exceeded.`} />
 
 

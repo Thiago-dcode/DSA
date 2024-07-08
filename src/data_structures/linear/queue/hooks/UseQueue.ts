@@ -10,33 +10,48 @@ function UseQueue() {
   const [queue, setQueue] = useState<Queue<Primitive> | null>(null);
   const [isStackOverFlow, setIsStackOverFlow] = useState(false);
   const { dequeueAnimation, moveAnimation } = UseQueueAnimation(queue);
-  const enqueue = (data: Primitive) => {
-    if (!queue) return;
-    if (queue.size >= queue?.maxSize) {
-      setIsStackOverFlow(true);
-      return;
-    }
-    queue?.enqueue(data);
-  };
-  const dequeue = async (callback = () => {}) => {
-    if (!queue) return;
-    const nodes = queue.toNodeArray;
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-      if (i === 0) {
-      await dequeueAnimation(node.ref, () => {
-          queue.dequeue();
-        });
-        continue;
+  const enqueue = (data: Primitive): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      if (!queue) {
+        reject(false);
+      } else {
+        if (queue.size >= queue?.maxSize) {
+          setIsStackOverFlow(true);
+          reject(false);
+        } else {
+          queue?.enqueue(data);
+          resolve(true);
+        }
       }
-      console.log('HELLO?',i)
-     moveAnimation(node.ref, i, () => {
-        node.position.y = (queue.nodeHeight + queue.nodeSpacing) * (i - 1) + queue.nodeSpacing
-      });
-   
-    }
-  
-    callback();
+    });
+  };
+  const dequeue = async (callback = () => {}): Promise<boolean> => {
+    return new Promise(async (resolve, reject) => {
+      if (!queue) {
+        reject(false);
+      } else {
+        const nodes = queue.toNodeArray;
+        for (let i = 0; i < nodes.length; i++) {
+          const node = nodes[i];
+          if (i === 0) {
+            await dequeueAnimation(node.ref, () => {
+              queue.dequeue();
+            });
+
+            continue;
+          }
+
+          moveAnimation(node.ref, i, () => {
+            node.position.y =
+              (queue.nodeHeight + queue.nodeSpacing) * (i - 1) +
+              queue.nodeSpacing;
+          });
+        }
+        resolve(true);
+      }
+
+      callback();
+    });
   };
 
   // const enqueue = async (data: Primitive) => {

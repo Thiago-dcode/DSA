@@ -10,16 +10,18 @@ type props = {
     node: Node<Primitive>,
     id: number,
     height: number,
-    onAnimationEnds?: (e: AnimationEvent) => void;
+    setAnimationIsRunning: (value:boolean) => void;
     handlePushAnimation: (ele: HTMLElement | null, onAnimationEnds: (e: AnimationEvent) => void) => void;
     dsType?: 'queue' | 'stack',
     action?: 'add' | 'delete'
 }
-const StackNodeComponent = ({ node, height, id, onAnimationEnds = () => { }, handlePushAnimation, dsType = 'stack' }: props) => {
+const StackNodeComponent = ({ node, height, id, setAnimationIsRunning = () => { }, handlePushAnimation, dsType = 'stack' }: props) => {
       const handleRef =  useCallback((element:HTMLDivElement|null) => {
         if (element== null) return
         node.ref = element;
-        handlePushAnimation(node.ref, onAnimationEnds)
+        handlePushAnimation(node.ref, ()=>{
+            setAnimationIsRunning(false)
+        })
     }, [])
 
     return (

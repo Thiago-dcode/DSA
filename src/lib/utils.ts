@@ -20,3 +20,17 @@ export const getSpeed = (speed: speed) => {
       return 0.5;
   }
 };
+
+export const  requestAnimation = function (
+  ref: HTMLElement,
+  animation: string,
+  animationEvent: (e: AnimationEvent) => void
+) {
+  ref.style.animation = "none";
+  ref.offsetHeight;
+
+  window.requestAnimationFrame(function () {
+    ref.style.animation = animation;
+  });
+  ref.addEventListener("animationend", animationEvent);
+};

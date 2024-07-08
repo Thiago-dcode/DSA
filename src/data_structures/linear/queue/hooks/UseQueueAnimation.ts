@@ -1,20 +1,7 @@
 import { Primitive } from "../../../../types";
-import { getSpeed } from "@/lib/utils";
+import { getSpeed, requestAnimation } from "@/lib/utils";
 import LinearDs from "../../_classes/LinearDs";
 const UseQueueAnimation = (linearDs: LinearDs<Primitive> | null) => {
-  var requestAnimation = function (
-    ref: HTMLElement,
-    animation: string,
-    animationEvent: (e: AnimationEvent) => void
-  ) {
-    ref.style.animation = "none";
-    ref.offsetHeight;
-
-    window.requestAnimationFrame(function () {
-      ref.style.animation = animation;
-    });
-    ref.addEventListener("animationend", animationEvent);
-  };
   const enqueueAnimation = async (
     ref: HTMLElement | null,
     onAnimationEnds: ((e: AnimationEvent) => void) | null = null
@@ -103,13 +90,12 @@ const UseQueueAnimation = (linearDs: LinearDs<Primitive> | null) => {
             linearDs.nodeSpacing
           }px`
         );
-      
+
         requestAnimation(
           ref,
-          `move-node-${linearDs.name} ${getSpeed(linearDs.speed)*200 + "ms"}`,
+          `move-node-${linearDs.name} ${getSpeed(linearDs.speed) * 200 + "ms"}`,
           animationEvent
         );
-        console.log("MOVE ANIMATION:", i);
       }
     });
   };

@@ -19,7 +19,7 @@ export default function Info({ className = '', size = 30, text, color = 'white',
                     {trigger}
                 </Button>
             </HoverCardTrigger>
-            <HoverCardContent className="md:w-[800px] w-[400px] ">
+            <HoverCardContent className="md:w-[800px] w-[400px]   h-[500px] overflow-scroll ">
                 <div className="flex flex-col w-full gap-2 items-center  ">
 
                     <h3 className="text-xl text-center font-semibold">{title}</h3>

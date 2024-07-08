@@ -1,19 +1,8 @@
 
 import { Primitive } from "../../../../types";
-import { getSpeed } from "@/lib/utils";
+import { getSpeed, requestAnimation } from "@/lib/utils";
 import LinearDs from "../../_classes/LinearDs";
 const UseStackAnimation = (linearDs: LinearDs<Primitive> | null) => {
-  var requestAnimation = function (
-    ref: HTMLElement,
-    animation: string,
-    animationEvent: (e: AnimationEvent) => void
-  ) {
-    ref.style.animation = "none";
-    window.requestAnimationFrame(function () {
-      ref.style.animation = animation;
-    });
-    ref.addEventListener("animationend", animationEvent);
-  };
   const handlePushAnimation = async (
     ref: HTMLElement | null,
     onAnimationEnds: ((e: AnimationEvent) => void) | null = null
@@ -80,7 +69,6 @@ const UseStackAnimation = (linearDs: LinearDs<Primitive> | null) => {
         rej(false);
       } else {
         const animationEvent = (e: AnimationEvent) => {
-          console.log("HELLO POP ANI END");
           if (onAnimationEnds) {
             onAnimationEnds(e);
           }
